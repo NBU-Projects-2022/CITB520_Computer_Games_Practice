@@ -15,6 +15,7 @@ enum class TextureColorFormat : uint16_t {
 
 struct RawImage {
     RawImage();
+    RawImage(RawImage && other);
     RawImage(const char * path);
     ~RawImage();
 

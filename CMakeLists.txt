@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project("ComputerGraphicsProject" VERSION 1.0.0)
+project("MoonPatrolGame" VERSION 1.0.0)
 
 # https://cmake.org/cmake/help/latest/prop_tgt/CXX_STANDARD.html
 set(CMAKE_CXX_STANDARD 17)
@@ -61,4 +61,4 @@ target_link_libraries(${PROJECT_NAME}
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:ComputerGraphicsProject>/assets")
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:MoonPatrolGame>/assets")

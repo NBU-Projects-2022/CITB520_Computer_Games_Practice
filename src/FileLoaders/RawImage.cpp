@@ -7,6 +7,22 @@ RawImage::RawImage()
     : width(0), height(0), format(TextureColorFormat::NOT_SET), data(nullptr), componentsPerPixel(0), isSTBLoaded(false)
 {}
 
+RawImage::RawImage(RawImage && other)
+    : width(other.width),
+    height(other.height),
+    format(other.format),
+    data(other.data),
+    componentsPerPixel(other.componentsPerPixel),
+    isSTBLoaded(other.isSTBLoaded)
+{
+    other.width = 0;
+    other.height = 0;
+    other.format = TextureColorFormat::NOT_SET;
+    other.data = nullptr;
+    other.componentsPerPixel = 0;
+    other.isSTBLoaded = false;
+}
+
 RawImage::RawImage(const char * filePath)
     : width(0), height(0), format(TextureColorFormat::NOT_SET), data(nullptr), componentsPerPixel(0), isSTBLoaded(true)
 {
@@ -61,7 +77,7 @@ RawImage RawImage::ToPowerOfTwo() {
         }
     }
 
-    return newImage;
+    return std::move(newImage);
 }
 
 RawImage::~RawImage() {

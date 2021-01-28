@@ -54,7 +54,7 @@ void BatchRecorder::Add(const Sprite & sprite, float x, float y, float rot, floa
 
 void BatchRecorder::Add(const Sprite & sprite, const glm::mat4 & mat) {
     std::map<TextureGPU *, DrawBatch2D *>::iterator batch;
-    auto lb = subBatches.lower_bound(sprite.texture);
+    auto lb = subBatches.find(sprite.texture);
     if (lb == subBatches.end()) {
         auto newBatch = new DrawBatch2D();
         newBatch->texture = sprite.texture;

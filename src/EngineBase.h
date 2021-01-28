@@ -114,7 +114,7 @@ public:
 
     // called before Draw
     void Update(double deltaTime) {
-        if (isGamePaused) {
+        if (!isInGame || isGamePaused) {
             return;
         }
 
@@ -127,7 +127,7 @@ public:
         enemies.Add(vehicleSprite, 500, 80);
         enemies.FinishRecording();
 
-        rotation += 0.05 * deltaTime;
+        rotation += 5 * deltaTime;
     }
 
     // ...

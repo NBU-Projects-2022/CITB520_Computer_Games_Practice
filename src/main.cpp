@@ -83,7 +83,7 @@ int main(int, char**) {
             }
 
             auto currentTime = timer.now();
-            double deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - lastTime).count() / 1000.0f;
+            double deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count() / 1000.0f;
             engine.Update(deltaTime);
             lastTime = currentTime;
 

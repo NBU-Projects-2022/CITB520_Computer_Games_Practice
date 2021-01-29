@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "Game/Level.h"
+
 struct GameState {
 // public:
     GameState()
@@ -9,6 +11,8 @@ struct GameState {
     {}
 
     // vehicle, enemies, ...?
+
+    Level level;
 
 // private:
     float progress;

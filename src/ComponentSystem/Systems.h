@@ -5,22 +5,22 @@ ECS_TYPE_IMPLEMENTATION;
 
 #include "Components.h"
 
-class BehaviourSystem : public ECS::EntitySystem {
+class NativeScriptSystem : public ECS::EntitySystem {
 public:
-    BehaviourSystem() {}
+    NativeScriptSystem() {}
 
-    virtual ~BehaviourSystem() {}
+    virtual ~NativeScriptSystem() = default;
 
     virtual void tick(ECS::World* world, float deltaTime) override;
 };
 
 class PhysicsSystem : public ECS::EntitySystem {
 public:
-    PhysicsSystem(float amount) {
-        gravityAmount = amount;
-    }
+    PhysicsSystem(float amount)
+        : gravityAmount(amount)
+    {}
 
-    virtual ~PhysicsSystem() {}
+    virtual ~PhysicsSystem() = default;
 
     virtual void tick(ECS::World* world, float deltaTime) override;
 

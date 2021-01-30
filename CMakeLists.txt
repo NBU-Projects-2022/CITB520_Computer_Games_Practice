@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project("MoonPatrolGame" VERSION 1.0.0)
+project("CITB520_PlantsVsZombies" VERSION 1.0.0)
 
 # https://cmake.org/cmake/help/latest/prop_tgt/CXX_STANDARD.html
 set(CMAKE_CXX_STANDARD 17)
@@ -20,11 +20,15 @@ add_subdirectory("libs/SDL2-2.0.12")
 add_executable(${PROJECT_NAME}
     # "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
     "src/main.cpp"
-    "src/ImGuiMenu.cpp"
+    "src/ComponentSystem/NativeScriptSystem.cpp"
+    "src/ComponentSystem/PhysicsSystem.cpp"
     "src/FileLoaders/RawImage.cpp"
-    "src/Game/EnemyBehaviourScript.cpp"
-    "src/Game/VehicleBehaviourScript.cpp"
-    "src/ComponentSystem/Systems.cpp"
+    "src/Game/Game.cpp"
+    "src/Game/ImGuiMenu.cpp"
+    "src/Game/NativeScripts/LawnMowerScript.cpp"
+    "src/Game/NativeScripts/PlantScript.cpp"
+    "src/Game/NativeScripts/ZombieScript.cpp"
+    "src/Game/NativeScripts/ZombieSpawnScript.cpp"
     "src/Physics/Colliders.cpp"
     "src/Rendering/BatchRecorder.cpp"
     "src/Rendering/BatchRenderer.cpp"
@@ -65,4 +69,4 @@ target_link_libraries(${PROJECT_NAME}
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:MoonPatrolGame>/assets")
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets")

@@ -1,18 +1,8 @@
 #include "Systems.h"
 #include "Physics/Colliders.h"
-#include "Game/Scripts.h"
-
-void BehaviourSystem::tick(ECS::World* world, float deltaTime) {
-    world->each<BehaviourComponent>(
-        [&](ECS::Entity* ent,
-            ECS::ComponentHandle<BehaviourComponent> behaviour
-        ) {
-            behaviour->behaviourScript.get()->Update(ent, deltaTime);
-        });
-}
 
 void PhysicsSystem::tick(ECS::World* world, float deltaTime) {
-    const auto& it = world->each<PositionComponent, RotationComponent, ColliderComponent>();
+    const auto& it = world->each<TransformComponent, ColliderComponent>();
     for (auto i = it.begin(); i != it.end(); ++i) {
         auto entity = i.get();
         auto entityCollider = entity->get<ColliderComponent>();
@@ -32,17 +22,29 @@ void PhysicsSystem::tick(ECS::World* world, float deltaTime) {
             // auto rot = entity->get<RotationComponent>();
             auto otherCollider = otherEntity->get<ColliderComponent>();
 
-            if (entityCollider->collider->CheckForCollisionWith(otherCollider->collider.get())) {
+            if (0 == int(entityCollider->collider->collidesWithLayers & otherCollider->collider->collisionLayer)
+                && 0 == int(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer)
+            ) {
+                continue;
+            }
+
+            if (!entityCollider->collider->CheckForCollisionWith(otherCollider->collider.get())) {
+                continue;
+            }
+
+            if (bool(entityCollider->collider->collidesWithLayers & otherCollider->collider->collisionLayer)) {
                 entityCollider->collider->collisions.push_back(Collider::Collision { otherEntity });
+            }
+
+            if (bool(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer)) {
                 otherCollider->collider->collisions.push_back(Collider::Collision { entity });
             }
         }
     }
 
-    world->each<PositionComponent, RotationComponent, ColliderComponent, RigidBodyComponent>(
+    world->each<TransformComponent, ColliderComponent, RigidBodyComponent>(
         [&](ECS::Entity* ent,
-            ECS::ComponentHandle<PositionComponent> pos,
-            ECS::ComponentHandle<RotationComponent> rot,
+            ECS::ComponentHandle<TransformComponent> transform,
             ECS::ComponentHandle<ColliderComponent> collider,
             ECS::ComponentHandle<RigidBodyComponent> rigidBody
         ) {
@@ -60,9 +62,9 @@ void PhysicsSystem::tick(ECS::World* world, float deltaTime) {
                 }
             }
 
-            pos->y += rigidBody->velocity.y * deltaTime;
-            if (pos->y < 120) {
-                pos->y = 120;
+            transform->position += rigidBody->velocity * deltaTime;
+            if (transform->position.y < 0) {
+                transform->position.y = 0;
                 rigidBody->acceleration = glm::vec2(0.0f);
                 rigidBody->velocity = glm::vec2(0.0f);
             }

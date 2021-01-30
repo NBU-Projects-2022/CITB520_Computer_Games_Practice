@@ -4,10 +4,21 @@
 #include <ECS.h>
 ECS_TYPE_IMPLEMENTATION;
 
+#include "Core/Common.h"
+
 enum class ColliderType {
     BOX,
     CIRCLE
 };
+
+enum class CollisionLayers : int {
+    GROUND = 1 >> 0,
+    ZOMBIE = 1 >> 1,
+    PLANT = 1 >> 2,
+    PROJECTILE = 1 >> 3,
+    SUN = 1 >> 4
+};
+DEFINE_ENUM_OPERATORS(CollisionLayers)
 
 class BoxCollider;
 class CircleCollider;
@@ -21,6 +32,8 @@ struct Collider {
     };
 
     ECS::Entity * entity;
+    CollisionLayers collisionLayer;
+    CollisionLayers collidesWithLayers;
     ColliderType type;
     std::vector<Collision> collisions;
 
@@ -31,7 +44,10 @@ struct Collider {
 
 protected:
     Collider(ECS::Entity * entity, ColliderType type)
-        : entity(entity), type(type)
+        : entity(entity),
+        type(type),
+        collisionLayer(CollisionLayers::GROUND),
+        collidesWithLayers(CollisionLayers::GROUND)
     {}
 };
 

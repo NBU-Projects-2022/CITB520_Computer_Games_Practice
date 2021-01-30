@@ -2,6 +2,7 @@
 
 #include <cstdint>
 
+#include <glm/glm.hpp>
 #include "OpenGLWrapper/TextureGPU.h"
 
 struct Sprite {

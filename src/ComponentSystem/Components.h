@@ -4,29 +4,26 @@
 #include <ECS.h>
 ECS_TYPE_IMPLEMENTATION;
 
-#include "utils.h"
+#include "Core/Common.h"
 
-struct PositionComponent {
+struct TransformComponent {
     ECS_DECLARE_TYPE;
 
-    PositionComponent(float x, float y) : x(x), y(y) {}
-    PositionComponent() : x(0.f), y(0.f) {}
+    TransformComponent(float positionX, float positionY, float rotation = 0.0f, float scaleX = 1.0f, float scaleY = 1.0f)
+        : position(positionX, positionY), rotation(rotation), scale(scaleX, scaleY)
+    {}
+    TransformComponent(glm::vec2 position, float rotation = 0.0f, glm::vec2 scale = glm::vec2(1.0f))
+        : position(position), rotation(rotation), scale(scale)
+    {}
+    TransformComponent()
+        : position(0.0f), rotation(0.0f), scale(1.0f)
+    {}
 
-    float x;
-    float y;
+    glm::vec2 position;
+    float rotation;
+    glm::vec2 scale;
 };
-
-ECS_DEFINE_TYPE(PositionComponent);
-
-struct RotationComponent {
-    ECS_DECLARE_TYPE;
-
-    RotationComponent(float angle) : angle(angle) {}
-    RotationComponent() : angle(0) {}
-    float angle;
-};
-
-ECS_DEFINE_TYPE(RotationComponent);
+ECS_DEFINE_TYPE(TransformComponent);
 
 class Sprite;
 struct RenderComponent {
@@ -36,7 +33,6 @@ struct RenderComponent {
 
     Ref<Sprite> sprite;
 };
-
 ECS_DEFINE_TYPE(RenderComponent);
 
 class Collider;
@@ -49,7 +45,6 @@ struct ColliderComponent {
 
     Ref<Collider> collider;
 };
-
 ECS_DEFINE_TYPE(ColliderComponent);
 
 struct RigidBodyComponent {
@@ -66,18 +61,25 @@ struct RigidBodyComponent {
     glm::vec2 velocity;
     glm::vec2 acceleration;
 };
-
 ECS_DEFINE_TYPE(RigidBodyComponent);
 
-class BehaviourScript;
-struct BehaviourComponent {
+class NativeScript;
+struct NativeScriptComponent {
     ECS_DECLARE_TYPE;
 
-    BehaviourComponent(Ref<BehaviourScript> behaviourScript)
-        : behaviourScript(behaviourScript)
+    NativeScriptComponent()
+        : nativeScript(nullptr)
     {}
 
-    Ref<BehaviourScript> behaviourScript;
-};
+    template<typename T>
+    void Bind() {
+        if (!nativeScript.get()) {
+            nativeScript = CreateRef<T>();
+        }
+    }
 
-ECS_DEFINE_TYPE(BehaviourComponent);
+protected:
+    Ref<NativeScript> nativeScript;
+    friend class NativeScriptSystem;
+};
+ECS_DEFINE_TYPE(NativeComponent);

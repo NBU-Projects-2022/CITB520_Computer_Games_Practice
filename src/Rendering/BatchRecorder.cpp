@@ -45,6 +45,10 @@ void BatchRecorder::Clear() {
     }
 }
 
+void BatchRecorder::Add(const Sprite & sprite, glm::vec2 position, float rotation, glm::vec2 scale) {
+    Add(sprite, position.x, position.y, rotation, scale.x, scale.y);
+}
+
 void BatchRecorder::Add(const Sprite & sprite, float x, float y, float rot, float scaleX, float scaleY) {
     auto modelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(x, y ,0.0f));
     modelMatrix = glm::rotate(modelMatrix, rot, glm::vec3(0.0, 0.0, 1.0));

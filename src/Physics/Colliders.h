@@ -58,11 +58,11 @@ bool CheckForCircleWithCircleCollision(CircleCollider * c1, CircleCollider * c2)
 struct BoxCollider : public Collider {
 
     BoxCollider(ECS::Entity * entity, float minX, float minY, float maxX, float maxY)
-        : min(minX, minY), max(maxX, maxY), Collider(entity, ColliderType::BOX)
+        : _min(minX, minY), _max(maxX, maxY), Collider(entity, ColliderType::BOX)
     {}
 
-    glm::vec2 min;
-    glm::vec2 max;
+    glm::vec2 _min;
+    glm::vec2 _max;
 
     virtual bool CheckForCollisionWith(Collider * collider) override {
         return collider->CheckForCollisionWith(this);

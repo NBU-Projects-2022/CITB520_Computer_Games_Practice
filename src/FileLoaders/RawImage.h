@@ -2,7 +2,7 @@
 
 #include <cstdint>
 // #include <string>
-
+#include <type_traits>
 #include <GL/gl3w.h>
 
 enum class TextureColorFormat : uint16_t {

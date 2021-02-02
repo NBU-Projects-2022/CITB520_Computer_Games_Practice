@@ -5,15 +5,25 @@ ECS_TYPE_IMPLEMENTATION;
 
 #include "Level.h"
 
+class GameState {
+public:
+    static GameState& Instance() {
+        static GameState ins;
+        return ins;
+    }
+
+    int money = 0;
+
+private:
+    GameState() = default;
+};
+
 class Game {
     friend class ImGuiMenu;
 public:
     Game(ECS::World* world)
-        : money(0),
-        world(world)
+        : world(world)
     {}
-
-    int money;
 
     Level level;
 

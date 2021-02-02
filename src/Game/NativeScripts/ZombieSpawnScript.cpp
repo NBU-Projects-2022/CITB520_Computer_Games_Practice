@@ -4,6 +4,8 @@
 #include "Core/AssetManager.h"
 #include "Physics/Colliders.h"
 
+#include "Game/Game.h"
+
 void ZombieSpawnScript::OnInit() {
     zombie = AssetManager::LoadImageFile("assets/sprites/zombie.png");
     zombieSprite = Sprite(0, 0, zombie->GetWidth(), zombie->GetHeight(), zombie.get());
@@ -28,5 +30,7 @@ void ZombieSpawnScript::Update(float deltaTime) {
         rigidBody->isKinematic = true;
 
         nextWaveIn = waveInterval;
+
+        GameState::Instance().money += 50;
     }
 }

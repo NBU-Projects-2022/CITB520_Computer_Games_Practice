@@ -6,6 +6,7 @@
 #include <imgui_impl_opengl3.h>
 
 #include "EngineBase.h"
+#include "Game/Game.h"
 
 ImGuiMenu::ImGuiMenu(EngineBase * engineBase)
     : engineBase(engineBase)
@@ -149,7 +150,8 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
         ImGui::Separator();
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::Text("money %d", gameState.money);
+        ImGui::Text("Game objects count %d", gameState.world->getCount());
+        ImGui::Text("money %d", GameState::Instance().money);
 
         ImGui::Separator();
 

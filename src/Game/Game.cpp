@@ -4,8 +4,8 @@
 #include "Game/NativeScripts/Scripts.h"
 #include "Physics/Colliders.h"
 
-SDL_Event Game::event;
-ECS::World* Game::world;
+//SDL_Event Game::event;
+//ECS::World* Game::world;
 
 void Game::Init() {
     auto plantSpawn = CreateGameObject();
@@ -29,6 +29,35 @@ void Game::OnWindowResize(int newWidth, int newHeight) {
 }
 
 void Game::Update(float deltaTime) {
-    SDL_PollEvent(&event);
     // level.Update(deltaTime);
+}
+
+void Game::DestroyGameObject(ECS::Entity* ent, bool immediate)
+{
+	if (ent == nullptr)
+		return;
+
+	world->destroy(ent, immediate);
+	/*if (ent->isPendingDestroy())
+	{
+		if (immediate)
+		{
+			entities.erase(std::remove(entities.begin(), entities.end(), ent), entities.end());
+			std::allocator_traits<EntityAllocator>::destroy(entAlloc, ent);
+			std::allocator_traits<EntityAllocator>::deallocate(entAlloc, ent, 1);
+		}
+
+		return;
+	}
+
+	ent->bPendingDestroy = true;
+
+	emit<Events::OnEntityDestroyed>({ ent });
+
+	if (immediate)
+	{
+		entities.erase(std::remove(entities.begin(), entities.end(), ent), entities.end());
+		std::allocator_traits<EntityAllocator>::destroy(entAlloc, ent);
+		std::allocator_traits<EntityAllocator>::deallocate(entAlloc, ent, 1);
+	}*/
 }

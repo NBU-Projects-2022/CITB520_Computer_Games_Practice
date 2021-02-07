@@ -23,7 +23,10 @@ public:
 private:
     EngineBase * engineBase;
 
-    Ref<TextureGPU> seedTex;
+    Ref<TextureGPU> peashooterSeed;
+    Ref<TextureGPU> sunflowerSeed;
+    Ref<TextureGPU> wallnutSeed;
+    Ref<TextureGPU> tallnutSeed;
 
     void DrawInGameUI(Game & gameState);
     void DrawPauseMenu();

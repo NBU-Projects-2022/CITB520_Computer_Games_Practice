@@ -12,8 +12,6 @@ bool PlantSpawnScript::shouldSpawn = false;
 
 void PlantSpawnScript::OnInit()
 {
-	
-	//plant = AssetManager::LoadImageFile("assets/sprites/Peashooter.png");
 	peashooter = AssetManager::LoadImageFile("assets/sprites/Peashooter.png");
 	sunflower = AssetManager::LoadImageFile("assets/sprites/Sunflower.png");
 	wallnut = AssetManager::LoadImageFile("assets/sprites/Wallnut1.png");
@@ -32,7 +30,6 @@ void PlantSpawnScript::OnSpawnPress()
 	SDL_GetMouseState(&x, &y);
 	std::cout << x << " " << y << std::endl;
 
-	//PlantScript plantScript(PlantTypes::Peashooter, (float)x, (float)y);//
 	auto plantEntity = CreateGameObject();
 	plantEntity->assign<TransformComponent>(x, 720 - y);
 	Collider* plantBoxCollider = nullptr;
@@ -41,13 +38,13 @@ void PlantSpawnScript::OnSpawnPress()
 	case (int)PlantTypes::Peashooter:
 		plantEntity->assign<RenderComponent>(CreateRef<Sprite>(peashooterSprite));
 		plantBoxCollider = new BoxCollider(plantEntity, 0, 0, peashooter->GetWidth(), peashooter->GetHeight());
+		//add shooter component
 		break;
 	case (int)PlantTypes::Sunflower:
 		plantEntity->assign<RenderComponent>(CreateRef<Sprite>(sunflowerSprite));
 		plantBoxCollider = new BoxCollider(plantEntity, 0, 0, sunflower->GetWidth(), sunflower->GetHeight());
 		break;
 	case (int)PlantTypes::Wallnut:
-		//plant->assign<PlantScript>(*wallnut);
 		plantEntity->assign<RenderComponent>(CreateRef<Sprite>(wallnutSprite));
 		plantBoxCollider = new BoxCollider(plantEntity, 0, 0, wallnut->GetWidth(), wallnut->GetHeight());
 		break;
@@ -58,7 +55,6 @@ void PlantSpawnScript::OnSpawnPress()
 	default:
 		break;
 	}
-
 
 	plantBoxCollider->collisionLayer = CollisionLayers::PLANT;
 	plantBoxCollider->collidesWithLayers = CollisionLayers::GROUND

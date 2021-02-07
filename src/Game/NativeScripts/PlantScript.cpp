@@ -5,51 +5,47 @@
 #include "Physics/Colliders.h"
 #include "../Game.h"
 #include <iostream>
+#include <SDL.h>
 
 void PlantScript::OnInit()
 {
-    std::cout << "plant " << GetComponent<TransformComponent>().position.x << GetComponent<TransformComponent>().position.y << std::endl;
-    // auto& position = GetComponent<TransformComponent>().position;
-	/*auto plantEntity = CreateGameObject();
-    plantEntity->assign<TransformComponent>((float)x, (float)y);
-    std::cout << GetComponent<TransformComponent>().position.x << std::endl;
-    plantEntity->assign<RenderComponent>(CreateRef<Sprite>(plantSprite));
+    placed = false;
+    spriteWidth = GetComponent<RenderComponent>().sprite->width;
+    spriteHeight = GetComponent<RenderComponent>().sprite->height;
 
-    Collider* plantBoxCollider = new BoxCollider(plantEntity, 0, 0, plant->GetWidth(), plant->GetHeight());
-    plantBoxCollider->collisionLayer = CollisionLayers::ZOMBIE;
-    plantBoxCollider->collidesWithLayers = CollisionLayers::GROUND
-        | CollisionLayers::PLANT
-        | CollisionLayers::PROJECTILE;
-    plantEntity->assign<ColliderComponent>(Ref<Collider>(plantBoxCollider));
-    plantEntity->assign<NativeScriptComponent>()->Bind<PlantScript>();
-    auto rigidBody = plantEntity->assign<RigidBodyComponent>();
-    rigidBody->isKinematic = true;*/
+   
 }
 
-void PlantScript::Update(float deltaTime) {
-
-    switch (Game::event.type)
+void PlantScript::Update(float deltaTime)
+{
+    if (!placed)
     {
-    case SDL_MOUSEMOTION:
-        //int x, y;
-      //  SDL_GetRelativeMouseState(&x, &y);
-       // GetComponent<TransformComponent>().position.x = x;
-       // GetComponent<TransformComponent>().position.y = y;
+        io = ImGui::GetIO();
 
-    default:
-        break;
+        if (io.MousePos.x < 0 || io.MousePos.x > SCREEN_WIDTH ||
+            io.MousePos.y < 0 || io.MousePos.y > SCREEN_HEIGHT)
+        {
+            shouldDestroy = true;
+        }
+        else if (io.MouseClicked[0])
+        {
+            //restrictions for placing plants go here
+            placed = true;
+
+
+            auto& position = GetComponent<TransformComponent>().position;
+
+            auto bulletSpawn = CreateGameObject();
+            bulletSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2);
+            bulletSpawn->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
+        }
+        else
+        {
+            x = io.MousePos.x - spriteWidth / 2;
+            y = SCREEN_HEIGHT - io.MousePos.y - spriteHeight / 2;
+            GetComponent<TransformComponent>().position.x = x;
+            GetComponent<TransformComponent>().position.y = y;
+        }
+       
     }
-    //auto plantEntity = CreateGameObject();
-   // plantEntity->assign<TransformComponent>((float)x, (float)y);
-    //plantEntity->assign<RenderComponent>(CreateRef<Sprite>(plantSprite));
-
-    /*Collider* plantBoxCollider = new BoxCollider(plantEntity, 0, 0, plant->GetWidth(), plant->GetHeight());
-    plantBoxCollider->collisionLayer = CollisionLayers::ZOMBIE;
-    plantBoxCollider->collidesWithLayers = CollisionLayers::GROUND
-        | CollisionLayers::PLANT
-        | CollisionLayers::PROJECTILE;
-    plantEntity->assign<ColliderComponent>(Ref<Collider>(plantBoxCollider));
-    plantEntity->assign<NativeScriptComponent>()->Bind<PlantScript>();
-    auto rigidBody = plantEntity->assign<RigidBodyComponent>();
-    rigidBody->isKinematic = true;*/
 }

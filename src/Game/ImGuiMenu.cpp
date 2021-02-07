@@ -7,11 +7,15 @@
 #include <iostream>
 
 #include "EngineBase.h"
+#include "Game/Game.h"
 
 ImGuiMenu::ImGuiMenu(EngineBase * engineBase)
     : engineBase(engineBase)
 {
-    seedTex = AssetManager::LoadImageFile("assets/sprites/SunflowerSeed.png");
+    peashooterSeed = AssetManager::LoadImageFile("assets/sprites/PeashooterSeed.png");
+    sunflowerSeed = AssetManager::LoadImageFile("assets/sprites/SunflowerSeed.png");
+    wallnutSeed = AssetManager::LoadImageFile("assets/sprites/WallnutSeed.png");
+    tallnutSeed = AssetManager::LoadImageFile("assets/sprites/TallnutSeed.png");
 }
 
 void ImGuiMenu::SetupContext(SDL_Window* window, SDL_GLContext gl_context, const char * glsl_version) {
@@ -152,37 +156,38 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
         ImGui::Separator();
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::Text("money %d", gameState.money);
+        ImGui::Text("Game objects count %d", gameState.world->getCount());
+        ImGui::Text("money %d", GameState::Instance().money);
 
         ImGui::Separator();
 
         if (ImGui::Button("Pause")) {
             engineBase->PauseGame();
         }
-        
-        uint64_t textureID = seedTex->GetId();
-       // ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ (float)seedTex->GetWidth(), (float)seedTex->GetHeight() }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-        if (ImGui::ImageButton(reinterpret_cast<void*>(textureID), ImVec2{ (float)seedTex->GetWidth(), (float)seedTex->GetHeight() })) {
+        if (ImGui::ImageButton(reinterpret_cast<void*>(peashooterSeed->GetId()), ImVec2{ (float)peashooterSeed->GetWidth(), (float)peashooterSeed->GetHeight() }))
+        {
            PlantSpawnScript::plantType = (int)PlantTypes::Peashooter;
            PlantSpawnScript::shouldSpawn = true;
         }
 
         ImGui::SameLine();
-        if (ImGui::Button("Sunflower")) {
+        if (ImGui::ImageButton(reinterpret_cast<void*>(sunflowerSeed->GetId()), ImVec2{ (float)sunflowerSeed->GetWidth(), (float)sunflowerSeed->GetHeight() }))
+        {
            PlantSpawnScript::plantType = (int)PlantTypes::Sunflower;
            PlantSpawnScript::shouldSpawn = true;
         }
-
+        
         ImGui::SameLine();
-        if (ImGui::Button("Wallnut")) {
-            
+        if (ImGui::ImageButton(reinterpret_cast<void*>(wallnutSeed->GetId()), ImVec2{ (float)wallnutSeed->GetWidth(), (float)wallnutSeed->GetHeight() }))
+        {
            PlantSpawnScript::plantType = (int)PlantTypes::Wallnut;
            PlantSpawnScript::shouldSpawn = true;
         }
 
         ImGui::SameLine();
-        if (ImGui::Button("Tallnut")) {
+        if (ImGui::ImageButton(reinterpret_cast<void*>(tallnutSeed->GetId()), ImVec2{ (float)tallnutSeed->GetWidth(), (float)tallnutSeed->GetHeight() }))
+        {
           PlantSpawnScript::plantType = (int)PlantTypes::Tallnut;
           PlantSpawnScript::shouldSpawn = true;
         }

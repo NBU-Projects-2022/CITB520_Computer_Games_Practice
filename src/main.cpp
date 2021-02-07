@@ -18,6 +18,7 @@
 
 #include "EngineBase.h"
 
+
 // Main code
 int main(int, char**) {
     // Setup SDL
@@ -41,7 +42,7 @@ int main(int, char**) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
     SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
-    SDL_Window* window = SDL_CreateWindow("CITB520 - PlantsVsZombies", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
+    SDL_Window* window = SDL_CreateWindow("CITB520 - PlantsVsZombies", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, window_flags);
   //  SDL_MaximizeWindow(window); // if maximized
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
@@ -81,13 +82,6 @@ int main(int, char**) {
                         event.window.windowID == SDL_GetWindowID(window)) 
                 {
                     done = true;
-                }
-                else if (event.type == SDL_MOUSEBUTTONDOWN)
-                {
-                    int x, y;
-                    SDL_GetMouseState(&x, &y);
-                    std::cout << "MOUSE STATE: ";
-                    std::cout << x << " " << y << std::endl;
                 }
                 else 
                 {

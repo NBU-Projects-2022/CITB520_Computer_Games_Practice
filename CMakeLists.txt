@@ -27,6 +27,7 @@ add_executable(${PROJECT_NAME}
     "src/Game/ImGuiMenu.cpp"
     "src/Game/NativeScripts/LawnMowerScript.cpp"
     "src/Game/NativeScripts/PlantScript.cpp"
+    "src/Game/NativeScripts/PlantSpawnScript.cpp"
     "src/Game/NativeScripts/ZombieScript.cpp"
     "src/Game/NativeScripts/ZombieSpawnScript.cpp"
     "src/Physics/Colliders.cpp"
@@ -38,7 +39,8 @@ add_executable(${PROJECT_NAME}
     "src/Rendering/OpenGLWrapper/TextureGPU.cpp"
     "src/Rendering/OpenGLWrapper/VAO.cpp"
     "src/Rendering/OpenGLWrapper/DebugGL.cpp"
-)
+ 	"src/Game/NativeScripts/BulletSpawnScript.cpp" 
+	"src/Game/NativeScripts/BulletScript.cpp")
 
 # OpenGL
 find_package(OpenGL REQUIRED)

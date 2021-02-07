@@ -12,5 +12,10 @@ void NativeScriptSystem::tick(ECS::World* world, float deltaTime) {
             }
 
             nativeScriptComponent->nativeScript.get()->Update(deltaTime);
+
+            if (nativeScriptComponent->nativeScript->shouldDestroy)
+            {
+                world->destroy(ent);
+            }
         });
 }

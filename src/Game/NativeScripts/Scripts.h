@@ -3,11 +3,10 @@
 #include <ECS.h>
 ECS_TYPE_IMPLEMENTATION;
 
-// #include "ComponentSystem/Components.h"
 #include "Core/Common.h"
 #include "Rendering/Sprite.h"
 #include "../Game.h"
-
+#include <imgui.h>
 
 class NativeScript {
 public:
@@ -25,47 +24,42 @@ public:
         return entity->getWorld()->create();
     }
 
+    bool shouldDestroy;
+
 private:
     ECS::Entity * entity;
     friend class NativeScriptSystem;
 };
 
 enum class PlantTypes { None, Peashooter, Sunflower, Wallnut, Tallnut };
-//int plantType = (int)PlantTypes::None;
-//bool shouldSpawn = false;
-class PlantScript : public NativeScript {
+
+class PlantScript : public NativeScript 
+{
 public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
-    PlantScript() = default;
-    PlantScript(PlantTypes, float, float);
-
     
 private:
-    float x, y;
-   
+    float x;
+    float y;
+    float spriteWidth;
+    float spriteHeight;
+
+    bool placed;
+    ImGuiIO io;
 };
 
-
-    //
-    //
-    //
-    //
-   // 
-   // 
-   // 
-
-class PlantSpawnScript : public NativeScript {
+class PlantSpawnScript : public NativeScript 
+{
 public:
-    //static
-  //  static
+    static bool shouldSpawn;
+    static int plantType;
     
     virtual void OnInit() override;
-
     virtual void Update(float deltaTime) override;
+
     void OnSpawnPress();
-    static int plantType;
-    static bool shouldSpawn;
+
 private:
     Ref<TextureGPU> peashooter;
     Ref<TextureGPU> sunflower;
@@ -78,17 +72,41 @@ private:
     Sprite tallnutSprite;
 };
 
-class ZombieScript : public NativeScript {
+class BulletScript : public NativeScript
+{
+public:
+   // virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+private:
+    float bulletSpeed = 500.0f;
+};
+
+class BulletSpawnScript : public NativeScript
+{
+public:
+    virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+private:
+    float spawnInterval = .5f, nextSpawnIn = 1.0f;
+    Ref<TextureGPU> bullet;
+    Sprite bulletSprite;
+};
+
+class ZombieScript : public NativeScript 
+{
 public:
     virtual void Update(float deltaTime) override;
+
 private:
     float zombieSpeed = 15.0f;
 };
 
-class ZombieSpawnScript : public NativeScript {
+class ZombieSpawnScript : public NativeScript
+{
 public:
     virtual void OnInit() override;
-
     virtual void Update(float deltaTime) override;
 
 private:
@@ -97,7 +115,8 @@ private:
     Sprite zombieSprite;
 };
 
-class LawnMowerScript : public NativeScript {
+class LawnMowerScript : public NativeScript 
+{
 public:
     virtual void Update(float deltaTime) override;
 };

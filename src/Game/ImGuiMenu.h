@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 #include "Game.h"
+#include "NativeScripts/Scripts.h"
 // #include "EngineBase.h"
 
 class EngineBase;
@@ -21,6 +22,8 @@ public:
 
 private:
     EngineBase * engineBase;
+
+    Ref<TextureGPU> seedTex;
 
     void DrawInGameUI(Game & gameState);
     void DrawPauseMenu();

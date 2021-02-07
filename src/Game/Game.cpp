@@ -4,7 +4,13 @@
 #include "Game/NativeScripts/Scripts.h"
 #include "Physics/Colliders.h"
 
+SDL_Event Game::event;
+ECS::World* Game::world;
+
 void Game::Init() {
+    auto plantSpawn = CreateGameObject();
+    plantSpawn->assign<NativeScriptComponent>()->Bind<PlantSpawnScript>();
+
     auto zombieSpawn = CreateGameObject();
     zombieSpawn->assign<TransformComponent>(800.0f, 150.0f);
     zombieSpawn->assign<NativeScriptComponent>()->Bind<ZombieSpawnScript>();
@@ -23,5 +29,6 @@ void Game::OnWindowResize(int newWidth, int newHeight) {
 }
 
 void Game::Update(float deltaTime) {
+    SDL_PollEvent(&event);
     // level.Update(deltaTime);
 }

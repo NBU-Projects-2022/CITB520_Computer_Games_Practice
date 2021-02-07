@@ -4,12 +4,15 @@
 #include <imgui.h>
 #include <imgui_impl_sdl.h>
 #include <imgui_impl_opengl3.h>
+#include <iostream>
 
 #include "EngineBase.h"
 
 ImGuiMenu::ImGuiMenu(EngineBase * engineBase)
     : engineBase(engineBase)
-{}
+{
+    seedTex = AssetManager::LoadImageFile("assets/sprites/SunflowerSeed.png");
+}
 
 void ImGuiMenu::SetupContext(SDL_Window* window, SDL_GLContext gl_context, const char * glsl_version) {
     // Setup Dear ImGui context
@@ -155,6 +158,33 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
 
         if (ImGui::Button("Pause")) {
             engineBase->PauseGame();
+        }
+        
+        uint64_t textureID = seedTex->GetId();
+       // ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ (float)seedTex->GetWidth(), (float)seedTex->GetHeight() }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+        if (ImGui::ImageButton(reinterpret_cast<void*>(textureID), ImVec2{ (float)seedTex->GetWidth(), (float)seedTex->GetHeight() })) {
+           PlantSpawnScript::plantType = (int)PlantTypes::Peashooter;
+           PlantSpawnScript::shouldSpawn = true;
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button("Sunflower")) {
+           PlantSpawnScript::plantType = (int)PlantTypes::Sunflower;
+           PlantSpawnScript::shouldSpawn = true;
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button("Wallnut")) {
+            
+           PlantSpawnScript::plantType = (int)PlantTypes::Wallnut;
+           PlantSpawnScript::shouldSpawn = true;
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button("Tallnut")) {
+          PlantSpawnScript::plantType = (int)PlantTypes::Tallnut;
+          PlantSpawnScript::shouldSpawn = true;
         }
 
         ImGui::End();

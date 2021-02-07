@@ -4,14 +4,19 @@
 ECS_TYPE_IMPLEMENTATION;
 
 #include "Level.h"
+#include <SDL.h>
 
 class Game {
     friend class ImGuiMenu;
 public:
+    static SDL_Event event;
+
     Game(ECS::World* world)
-        : money(0),
-        world(world)
-    {}
+        : money(0)
+        //world(world)
+    {
+        this->world = world;
+    }
 
     int money;
 
@@ -23,10 +28,10 @@ public:
 
     void Update(float deltaTime);
 
-    ECS::Entity* CreateGameObject() {
+    static ECS::Entity* CreateGameObject() {
         return world->create();
     }
 
+    static ECS::World* world;
 private:
-    ECS::World* world;
 };

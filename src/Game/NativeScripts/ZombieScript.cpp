@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 #include "ComponentSystem/Components.h"
-
+#include <iostream>
 void ZombieScript::Update(float deltaTime) {
     auto & rigidBody = GetComponent<RigidBodyComponent>();
     rigidBody.velocity.x = -zombieSpeed;

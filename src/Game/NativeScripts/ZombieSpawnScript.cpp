@@ -3,7 +3,7 @@
 #include "ComponentSystem/Components.h"
 #include "Core/AssetManager.h"
 #include "Physics/Colliders.h"
-
+#include <iostream>
 void ZombieSpawnScript::OnInit() {
     zombie = AssetManager::LoadImageFile("assets/sprites/zombie.png");
     zombieSprite = Sprite(0, 0, zombie->GetWidth(), zombie->GetHeight(), zombie.get());

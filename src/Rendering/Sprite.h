@@ -5,7 +5,8 @@
 #include <glm/glm.hpp>
 #include "OpenGLWrapper/TextureGPU.h"
 
-struct Sprite {
+class Sprite {
+public:
     Sprite() = default;
 
     Sprite(int16_t x, int16_t y, int16_t width, int16_t height, TextureGPU * texture)

@@ -9,17 +9,17 @@ ECS_TYPE_IMPLEMENTATION;
 struct TransformComponent {
     ECS_DECLARE_TYPE;
 
-    TransformComponent(float positionX, float positionY, float rotation = 0.0f, float scaleX = 1.0f, float scaleY = 1.0f)
-        : position(positionX, positionY), rotation(rotation), scale(scaleX, scaleY)
+    TransformComponent(float positionX, float positionY, float positionZ, float rotation = 0.0f, float scaleX = 1.0f, float scaleY = 1.0f)
+        : position(positionX, positionY, positionZ), rotation(rotation), scale(scaleX, scaleY)
     {}
-    TransformComponent(glm::vec2 position, float rotation = 0.0f, glm::vec2 scale = glm::vec2(1.0f))
+    TransformComponent(glm::vec3 position, float rotation = 0.0f, glm::vec2 scale = glm::vec2(1.0f))
         : position(position), rotation(rotation), scale(scale)
     {}
     TransformComponent()
         : position(0.0f), rotation(0.0f), scale(1.0f)
     {}
 
-    glm::vec2 position;
+    glm::vec3 position;
     float rotation;
     glm::vec2 scale;
 };

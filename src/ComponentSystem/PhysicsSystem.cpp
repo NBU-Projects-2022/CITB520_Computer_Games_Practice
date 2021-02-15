@@ -62,7 +62,7 @@ void PhysicsSystem::tick(ECS::World* world, float deltaTime) {
                 }
             }
 
-            transform->position += rigidBody->velocity * deltaTime;
+            transform->position += glm::vec3(rigidBody->velocity * deltaTime, 0);
             if (transform->position.y < 0) {
                 transform->position.y = 0;
                 rigidBody->acceleration = glm::vec2(0.0f);

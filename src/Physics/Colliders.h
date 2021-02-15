@@ -23,8 +23,8 @@ DEFINE_ENUM_OPERATORS(CollisionLayers)
 class BoxCollider;
 class CircleCollider;
 
-struct Collider {
-
+class Collider {
+public:
     virtual ~Collider() = default;
 
     struct Collision {
@@ -55,8 +55,8 @@ bool CheckForBoxWithBoxCollision(BoxCollider * b1, BoxCollider * b2);
 bool CheckForBoxWithCircleCollision(BoxCollider * b, CircleCollider * c);
 bool CheckForCircleWithCircleCollision(CircleCollider * c1, CircleCollider * c2);
 
-struct BoxCollider : public Collider {
-
+class BoxCollider : public Collider {
+public:
     BoxCollider(ECS::Entity * entity, float minX, float minY, float maxX, float maxY)
         : _min(minX, minY), _max(maxX, maxY), Collider(entity, ColliderType::BOX)
     {}
@@ -75,8 +75,8 @@ struct BoxCollider : public Collider {
     }
 };
 
-struct CircleCollider : public Collider {
-
+class CircleCollider : public Collider {
+public:
     CircleCollider(ECS::Entity * entity, float radius)
         : radius(radius), Collider(entity, ColliderType::CIRCLE)
     {}

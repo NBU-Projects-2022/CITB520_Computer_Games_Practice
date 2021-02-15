@@ -3,7 +3,10 @@
 #include <ECS.h>
 ECS_TYPE_IMPLEMENTATION;
 
-#include "Level.h"
+#include "Core/Common.h"
+#include "Rendering/Sprite.h"
+#include "Rendering/OpenGLWrapper/TextureGPU.h"
+
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 800;
 
@@ -27,7 +30,7 @@ public:
         : world(world)
     {}
 
-    Level level;
+    //Level level;
 
     void Init();
 
@@ -43,4 +46,6 @@ public:
 
 private:
     ECS::World* world;
+    Ref<TextureGPU> texture;
+    Ref<Sprite> sprite;
 };

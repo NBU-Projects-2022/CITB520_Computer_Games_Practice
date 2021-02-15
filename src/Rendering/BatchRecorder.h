@@ -10,7 +10,7 @@
 #include "OpenGLWrapper/TextureGPU.h"
 
 struct SpriteVertex {
-    glm::vec2 position;
+    glm::vec3 position;
     glm::vec2 uv;
     glm::vec4 color;
 };
@@ -29,8 +29,8 @@ class BatchRecorder {
 public:
     ~BatchRecorder();
 
-    void Add(const Sprite & sprite, glm::vec2 position, float rotation, glm::vec2 scale);
-    void Add(const Sprite & sprite, float x, float y, float rot = 0.0f, float scaleX = 1, float scaleY = 1);
+    void Add(const Sprite & sprite, glm::vec3 position, float rotation, glm::vec2 scale);
+    void Add(const Sprite & sprite, float x, float y, float z, float rot = 0.0f, float scaleX = 1, float scaleY = 1);
     void Add(const Sprite & sprite, const glm::mat4 & mat);
 
     void FinishRecording();

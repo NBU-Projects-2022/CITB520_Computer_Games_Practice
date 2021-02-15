@@ -1,12 +1,16 @@
 #pragma once
 
+#pragma warning(push, 0)
+#include <imgui.h>
+#pragma warning(pop)
+
 #include <ECS.h>
 ECS_TYPE_IMPLEMENTATION;
 
 #include "Core/Common.h"
 #include "Rendering/Sprite.h"
 #include "../Game.h"
-#include <imgui.h>
+
 
 class NativeScript {
 public:

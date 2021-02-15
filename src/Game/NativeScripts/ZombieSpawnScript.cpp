@@ -19,7 +19,7 @@ void ZombieSpawnScript::Update(float deltaTime) {
         auto zombieEntity = CreateGameObject();
         zombieEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
         zombieEntity->assign<RenderComponent>(CreateRef<Sprite>(zombieSprite));
-        Collider * zombieBoxCollider = new BoxCollider(zombieEntity, 0, 0, zombie->GetWidth(), zombie->GetHeight());
+        Collider * zombieBoxCollider = new BoxCollider(zombieEntity, 0, 0, (float)zombie->GetWidth(), (float)zombie->GetHeight());
         zombieBoxCollider->collisionLayer = CollisionLayers::ZOMBIE;
         zombieBoxCollider->collidesWithLayers = CollisionLayers::GROUND
             | CollisionLayers::PLANT

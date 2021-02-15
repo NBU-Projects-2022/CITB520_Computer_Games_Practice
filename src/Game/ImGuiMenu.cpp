@@ -1,11 +1,13 @@
-#include "ImGuiMenu.h"
+#include <iostream>
 
+#pragma warning(push, 0) 
 #include <GL/gl3w.h>
 #include <imgui.h>
 #include <imgui_impl_sdl.h>
 #include <imgui_impl_opengl3.h>
-#include <iostream>
+#pragma warning(pop)
 
+#include "ImGuiMenu.h"
 #include "EngineBase.h"
 #include "Game/Game.h"
 

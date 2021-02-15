@@ -10,14 +10,15 @@
 #include <thread>
 // #include <chrono>
 
+#pragma warning(push, 0)
 #include <imgui.h>
 #include <imgui_impl_sdl.h>
 #include <imgui_impl_opengl3.h>
 #include <SDL.h>
 #include <GL/gl3w.h> // Initialize with gl3wInit()
+#pragma warning(pop)
 
 #include "EngineBase.h"
-
 
 // Main code
 int main(int, char**) {
@@ -42,7 +43,7 @@ int main(int, char**) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
     SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
-    SDL_Window* window = SDL_CreateWindow("CITB520 - PlantsVsZombies", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, window_flags);
+    SDL_Window* window = SDL_CreateWindow("Plants Vs Zombies", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, window_flags);
   //  SDL_MaximizeWindow(window); // if maximized
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
@@ -90,7 +91,7 @@ int main(int, char**) {
             }
             
             auto currentTime = timer.now();
-            double deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count() / 1000.0f;
+            float deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count() / 1000.0f;
             engine.Update(deltaTime);
             lastTime = currentTime;
 

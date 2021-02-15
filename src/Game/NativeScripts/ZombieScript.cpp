@@ -1,8 +1,13 @@
-#include "Scripts.h"
-
-#include <imgui.h>
-#include "ComponentSystem/Components.h"
 #include <iostream>
+
+#pragma warning(push, 0)
+#include <imgui.h>
+#pragma warning(pop)
+
+#include "Scripts.h"
+#include "ComponentSystem/Components.h"
+
+
 void ZombieScript::Update(float deltaTime) {
     auto & rigidBody = GetComponent<RigidBodyComponent>();
     rigidBody.velocity.x = -zombieSpeed;

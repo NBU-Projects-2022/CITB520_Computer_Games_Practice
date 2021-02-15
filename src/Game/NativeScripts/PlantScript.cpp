@@ -1,11 +1,16 @@
-#include "Scripts.h"
+#include <iostream>
 
+#pragma warning(push, 0)
+#include <SDL.h>
+#pragma warning(pop)
+
+#include "Scripts.h"
 #include "ComponentSystem/Components.h"
 #include "Core/AssetManager.h"
 #include "Physics/Colliders.h"
 #include "../Game.h"
-#include <iostream>
-#include <SDL.h>
+
+
 
 void PlantScript::OnInit()
 {
@@ -36,7 +41,7 @@ void PlantScript::Update(float deltaTime)
             auto& position = GetComponent<TransformComponent>().position;
 
             auto bulletSpawn = CreateGameObject();
-            bulletSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2);
+            bulletSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, 0);
             bulletSpawn->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
         }
         else

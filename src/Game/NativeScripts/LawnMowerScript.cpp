@@ -1,6 +1,8 @@
-#include "Scripts.h"
-
+#pragma warning(push, 0)
 #include <imgui.h>
+#pragma warning(pop)
+
+#include "Scripts.h"
 #include "ComponentSystem/Components.h"
 #include "Physics/Colliders.h"
 

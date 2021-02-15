@@ -72,6 +72,11 @@ public:
         // glClearColor(0.0f, 0.0f, 0.0f, 1.00f);
         glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
 
+        glEnable(GL_DEPTH_TEST);
+        // Accept fragment if it closer to the camera than the former one
+        glDepthFunc(GL_LESS);
+        glEnable(GL_CULL_FACE);
+
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -135,7 +140,7 @@ public:
     }
 
     // called before Draw
-    void Update(double deltaTime) {
+    void Update(float deltaTime) {
         if (!isInGame || isGamePaused) {
             return;
         }
@@ -163,7 +168,7 @@ public:
         CheckForGLErrors();
 
         // Clear the screen
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // sprites
         spriteMaterial.Bind();
@@ -171,13 +176,11 @@ public:
         spriteMaterial.UpdateModelView(glm::mat4(1.0));
 
         spriteMaterial.UpdateIsDebug(false);
-        batchRenderer.Draw(gameState.level.terrain);
         batchRenderer.Draw(entitySprites);
 
         if (isDebugEnabled) {
             spriteMaterial.UpdateIsDebug(true);
             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-            batchRenderer.Draw(gameState.level.terrain);
             batchRenderer.Draw(entitySprites);
             glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
         }

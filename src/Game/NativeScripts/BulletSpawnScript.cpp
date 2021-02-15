@@ -1,11 +1,15 @@
-#include "Scripts.h"
+#include <iostream>
 
+#pragma warning(push, 0)
+#include <SDL.h>
+#include <imgui.h>
+#pragma warning(pop)
+
+#include "Scripts.h"
 #include "ComponentSystem/Components.h"
 #include "Core/AssetManager.h"
 #include "Physics/Colliders.h"
-#include <SDL.h>
-#include <imgui.h>
-#include <iostream>
+
 
 void BulletSpawnScript::OnInit() 
 {
@@ -21,7 +25,7 @@ void BulletSpawnScript::Update(float deltaTime)
         auto bulletEntity = CreateGameObject();
         bulletEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
         bulletEntity->assign<RenderComponent>(CreateRef<Sprite>(bulletSprite));
-        Collider* bulletCircleCollider = new CircleCollider(bulletEntity, bullet->GetWidth());
+        Collider* bulletCircleCollider = new CircleCollider(bulletEntity, (float) bullet->GetWidth());
         bulletCircleCollider->collisionLayer = CollisionLayers::PLANT;
         bulletCircleCollider->collidesWithLayers = CollisionLayers::GROUND
             | CollisionLayers::PLANT

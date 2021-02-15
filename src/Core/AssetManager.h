@@ -13,7 +13,7 @@ public:
         return texture;
     }
 
-    static Ref<TextureGPU> LoadImageFile(const std::string & path) {
-        return LoadImageFile(path.c_str());
-    }
+    //static Ref<TextureGPU> LoadImageFile(const std::string & path) {
+    //    return LoadImageFile(path.c_str());
+    //}
 };

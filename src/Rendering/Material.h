@@ -73,7 +73,8 @@ private:
             {
                 v_color = color;
                 v_uv = uv;
-                gl_Position = vec4((projection * (modelView * vec4(vertex, 1.0))).xy, vertex.z, 1.0);
+                gl_Position = projection * (modelView * vec4(vertex, 1.0));
+                // gl_Position = vec4((projection * (modelView * vec4(vertex, 1.0))).xy, vertex.z, 1.0);
                 // gl_Position = projection * vec4(vertex, 1.0);
             }
         )", ShaderType::VERTEX_SHADER);

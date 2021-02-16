@@ -77,14 +77,17 @@ void BatchRecorder::Add(const Sprite & sprite, const glm::mat4 & mat) {
     auto & vertices = batch->second->vertices;
     SpriteVertex vecBottomLeft { { 0, 0, 0 }, { sprite.uvMin.x, sprite.uvMax.y }, glm::vec4(1.0) };
     vecBottomLeft.position = mat * glm::vec4(vecBottomLeft.position, 1.0);
+    vecBottomLeft.color = sprite.color;
     vertices.push_back(vecBottomLeft);
 
     SpriteVertex vecBottomRight { { sprite.width, 0, 0 }, { sprite.uvMax.x, sprite.uvMax.y }, glm::vec4(1.0) };
     vecBottomRight.position = mat * glm::vec4(vecBottomRight.position, 1.0);
+    vecBottomRight.color = sprite.color;
     vertices.push_back(vecBottomRight);
 
     SpriteVertex vecTopLeft { { 0, sprite.height, 0 }, { sprite.uvMin.x, sprite.uvMin.y }, glm::vec4(1.0) };
     vecTopLeft.position = mat * glm::vec4(vecTopLeft.position, 1.0);
+    vecTopLeft.color = sprite.color;
     vertices.push_back(vecTopLeft);
 
     // second triangle
@@ -93,5 +96,6 @@ void BatchRecorder::Add(const Sprite & sprite, const glm::mat4 & mat) {
 
     SpriteVertex vecTopRight { { sprite.width, sprite.height, 0 }, { sprite.uvMax.x, sprite.uvMin.y }, glm::vec4(1.0) };
     vecTopRight.position = mat * glm::vec4(vecTopRight.position, 1.0);
+    vecTopRight.color = sprite.color;
     vertices.push_back(vecTopRight);
 }

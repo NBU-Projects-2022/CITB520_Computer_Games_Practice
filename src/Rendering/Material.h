@@ -95,7 +95,7 @@ private:
             void main()
             {
                 if (isDebug) {
-                    fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+                    fragColor = vec4(1.0, 0.0, 0.0, 1.0);
                 } else {
                     fragColor = v_color * texture( spriteSampler, v_uv );
                 }

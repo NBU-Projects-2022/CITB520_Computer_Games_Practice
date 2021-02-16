@@ -18,7 +18,7 @@ void PlantScript::OnInit()
     spriteWidth = GetComponent<RenderComponent>().sprite->width;
     spriteHeight = GetComponent<RenderComponent>().sprite->height;
 
-   
+
 }
 
 void PlantScript::Update(float deltaTime)
@@ -41,7 +41,7 @@ void PlantScript::Update(float deltaTime)
             auto& position = GetComponent<TransformComponent>().position;
 
             auto bulletSpawn = CreateGameObject();
-            bulletSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, 0);
+            bulletSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
             bulletSpawn->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
         }
         else
@@ -51,6 +51,6 @@ void PlantScript::Update(float deltaTime)
             GetComponent<TransformComponent>().position.x = x;
             GetComponent<TransformComponent>().position.y = y;
         }
-       
+
     }
 }

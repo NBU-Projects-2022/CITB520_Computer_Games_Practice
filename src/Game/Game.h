@@ -10,6 +10,18 @@ ECS_TYPE_IMPLEMENTATION;
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 800;
 
+const float DRAW_LAYER_0 = 0.0f;
+const float DRAW_LAYER_1 = 0.1f;
+const float DRAW_LAYER_2 = 0.2f;
+const float DRAW_LAYER_3 = 0.3f;
+const float DRAW_LAYER_4 = 0.4f;
+const float DRAW_LAYER_5 = 0.5f;
+const float DRAW_LAYER_6 = 0.6f;
+const float DRAW_LAYER_7 = 0.7f;
+const float DRAW_LAYER_8 = 0.8f;
+const float DRAW_LAYER_9 = 0.9f;
+const float DRAW_LAYER_10 = 1.0f;
+
 class GameState {
 public:
     static GameState& Instance() {

@@ -100,6 +100,9 @@ private:
                     fragColor = v_color * texture( spriteSampler, v_uv );
                 }
 
+                float cutoff = 0.5;
+                if(fragColor.a < cutoff) discard;
+
                 // fragColor = v_color * vec4(v_uv, 1, 1);
             }
         )", ShaderType::FRAGMENT_SHADER);

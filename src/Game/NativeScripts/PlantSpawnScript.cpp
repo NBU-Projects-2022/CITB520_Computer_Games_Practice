@@ -24,7 +24,7 @@ void PlantSpawnScript::OnInit()
 	sunflowerSprite = Sprite(0, 0, sunflower->GetWidth(), sunflower->GetHeight(), sunflower.get());
 	wallnutSprite = Sprite(0, 0, wallnut->GetWidth(), wallnut->GetHeight(), wallnut.get());
 	tallnutSprite = Sprite(0, 0, tallnut->GetWidth(), tallnut->GetHeight(), tallnut.get());
-	
+
 }
 
 void PlantSpawnScript::OnSpawnPress()
@@ -34,7 +34,7 @@ void PlantSpawnScript::OnSpawnPress()
 	std::cout << x << " " << y << std::endl;
 
 	auto plantEntity = CreateGameObject();
-	plantEntity->assign<TransformComponent>(x, 720 - y, 0);
+	plantEntity->assign<TransformComponent>(x, 720 - y, DRAW_LAYER_10);
 	Collider* plantBoxCollider = nullptr;
 	switch (plantType)
 	{

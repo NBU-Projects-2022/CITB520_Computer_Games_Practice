@@ -1,5 +1,6 @@
 #include "BatchRecorder.h"
 
+#include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
 
 BatchRecorder::~BatchRecorder() {
@@ -11,19 +12,25 @@ BatchRecorder::~BatchRecorder() {
 void BatchRecorder::FinishRecording() {
     for (auto & ptr : subBatches) {
         auto drawBatch = ptr.second;
-        if (!drawBatch->vao.IsStarted()) {
-            drawBatch->vao.Generate();
-        } else {
-            drawBatch->vertexBuffer.BindData(drawBatch->vertices.data(), sizeof(SpriteVertex) * drawBatch->vertices.size(), GL_STATIC_DRAW);
+
+        std::stable_sort(drawBatch->vertices.begin(),
+            drawBatch->vertices.end(),
+            [](const SpriteVertex & a, const SpriteVertex & b) {
+                return a.position.z < b.position.z;
+            });
+
+        if (drawBatch->vao.IsStarted()) {
+            drawBatch->vertexBuffer.BindData(drawBatch->vertices.data(), sizeof(SpriteVertex) * drawBatch->vertices.size(), GL_DYNAMIC_DRAW);
             // drawBatch->vertexBuffer.MapBufferRange(0, drawBatch->vertices.size(), GL_WRITE_ONLY);
             // drawBatch->vertexBuffer.UnmapBuffer();
             continue;
         }
 
+        drawBatch->vao.Generate();
         drawBatch->vao.Bind();
 
         drawBatch->vertexBuffer.GenerateBuffer(GL_ARRAY_BUFFER);
-        drawBatch->vertexBuffer.BindData(drawBatch->vertices.data(), sizeof(SpriteVertex) * drawBatch->vertices.size(), GL_STATIC_DRAW);
+        drawBatch->vertexBuffer.BindData(drawBatch->vertices.data(), sizeof(SpriteVertex) * drawBatch->vertices.size(), GL_DYNAMIC_DRAW);
 
         // vertex
         glEnableVertexAttribArray(0);

@@ -2,25 +2,23 @@
 #include "Physics/Colliders.h"
 
 void PhysicsSystem::tick(ECS::World* world, float deltaTime) {
-    const auto& it = world->each<TransformComponent, ColliderComponent>();
-    for (auto i = it.begin(); i != it.end(); ++i) {
-        auto entity = i.get();
-        auto entityCollider = entity->get<ColliderComponent>();
-        entityCollider->collider->collisions.clear();
-    }
+    std::vector<ECS::Entity*> objects;
+    objects.reserve(objectsCount);
+    world->each<TransformComponent, ColliderComponent>(
+        [&](ECS::Entity* ent,
+            ECS::ComponentHandle<TransformComponent> transform,
+            ECS::ComponentHandle<ColliderComponent> collider
+        ) {
+            collider->collider->collisions.clear();
+            objects.push_back(ent);
+        });
 
-    for (auto i = it.begin(); i != it.end(); ++i) {
-        auto entity = i.get();
-        // auto entityPos = entity->get<PositionComponent>();
-        // auto entityRot = entity->get<RotationComponent>();
-        auto entityCollider = entity->get<ColliderComponent>();
-        auto other = i;
-        ++other;
-        for (; other != it.end(); ++other) {
-            auto otherEntity = other.get();
-            // auto pos = entity->get<PositionComponent>();
-            // auto rot = entity->get<RotationComponent>();
-            auto otherCollider = otherEntity->get<ColliderComponent>();
+    for (auto i = 0; i < objects.size(); ++i) {
+        auto & entity = objects[i];
+        const auto & entityCollider = entity->get<ColliderComponent>();
+        for (int j = i + 1; j < objects.size(); ++j) {
+            auto & otherEntity = objects[j];
+            const auto & otherCollider = otherEntity->get<ColliderComponent>();
 
             if (0 == int(entityCollider->collider->collidesWithLayers & otherCollider->collider->collisionLayer)
                 && 0 == int(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer)

@@ -15,10 +15,10 @@ bool PlantSpawnScript::shouldSpawn = false;
 
 void PlantSpawnScript::OnInit()
 {
-	peashooter = AssetManager::LoadImageFile("assets/sprites/Peashooter.png");
-	sunflower = AssetManager::LoadImageFile("assets/sprites/Sunflower.png");
-	wallnut = AssetManager::LoadImageFile("assets/sprites/Wallnut1.png");
-	tallnut = AssetManager::LoadImageFile("assets/sprites/Tallnut1.png");
+	peashooter = AssetManager::LoadCachedImageFile("assets/sprites/Peashooter.png");
+	sunflower = AssetManager::LoadCachedImageFile("assets/sprites/Sunflower.png");
+	wallnut = AssetManager::LoadCachedImageFile("assets/sprites/Wallnut1.png");
+	tallnut = AssetManager::LoadCachedImageFile("assets/sprites/Tallnut1.png");
 
 	peashooterSprite = Sprite(0, 0, peashooter->GetWidth(), peashooter->GetHeight(), peashooter.get());
 	sunflowerSprite = Sprite(0, 0, sunflower->GetWidth(), sunflower->GetHeight(), sunflower.get());

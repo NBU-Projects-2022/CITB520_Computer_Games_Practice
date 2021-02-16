@@ -7,7 +7,7 @@
 #include "Game/Game.h"
 
 void ZombieSpawnScript::OnInit() {
-    zombie = AssetManager::LoadImageFile("assets/sprites/zombie.png");
+    zombie = AssetManager::LoadCachedImageFile("assets/sprites/zombie.png");
     zombieSprite = Sprite(0, 0, zombie->GetWidth(), zombie->GetHeight(), zombie.get());
 }
 

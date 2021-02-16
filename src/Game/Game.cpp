@@ -11,7 +11,7 @@
 void Game::Init() {
 	auto backgroundEntity = CreateGameObject();
 	backgroundEntity->assign<TransformComponent>(0.0f, 0.0f, -20); // assign() takes arguments and passes them to the constructor
-	texture = AssetManager::LoadImageFile("assets/sprites/background1.jpg");
+	texture = AssetManager::LoadCachedImageFile("assets/sprites/background1.jpg");
 	sprite = CreateRef<Sprite>(0, 0, texture->GetWidth(), texture->GetHeight(), texture.get());
 	backgroundEntity->assign<RenderComponent>(sprite);
 

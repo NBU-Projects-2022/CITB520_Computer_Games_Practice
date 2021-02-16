@@ -11,13 +11,13 @@
 #include "Physics/Colliders.h"
 
 
-void BulletSpawnScript::OnInit() 
+void BulletSpawnScript::OnInit()
 {
-    bullet = AssetManager::LoadImageFile("assets/sprites/Bullet.png");
+    bullet = AssetManager::LoadCachedImageFile("assets/sprites/Bullet.png");
     bulletSprite = Sprite(0, 0, bullet->GetWidth(), bullet->GetHeight(), bullet.get());
 }
 
-void BulletSpawnScript::Update(float deltaTime) 
+void BulletSpawnScript::Update(float deltaTime)
 {
     nextSpawnIn -= deltaTime;
     if (nextSpawnIn < 0) {

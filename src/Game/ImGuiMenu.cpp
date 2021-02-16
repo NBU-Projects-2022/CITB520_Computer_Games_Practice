@@ -1,6 +1,6 @@
 #include <iostream>
 
-#pragma warning(push, 0) 
+#pragma warning(push, 0)
 #include <GL/gl3w.h>
 #include <imgui.h>
 #include <imgui_impl_sdl.h>
@@ -14,10 +14,10 @@
 ImGuiMenu::ImGuiMenu(EngineBase * engineBase)
     : engineBase(engineBase)
 {
-    peashooterSeed = AssetManager::LoadImageFile("assets/sprites/PeashooterSeed.png");
-    sunflowerSeed = AssetManager::LoadImageFile("assets/sprites/SunflowerSeed.png");
-    wallnutSeed = AssetManager::LoadImageFile("assets/sprites/WallnutSeed.png");
-    tallnutSeed = AssetManager::LoadImageFile("assets/sprites/TallnutSeed.png");
+    peashooterSeed = AssetManager::LoadCachedImageFile("assets/sprites/PeashooterSeed.png");
+    sunflowerSeed = AssetManager::LoadCachedImageFile("assets/sprites/SunflowerSeed.png");
+    wallnutSeed = AssetManager::LoadCachedImageFile("assets/sprites/WallnutSeed.png");
+    tallnutSeed = AssetManager::LoadCachedImageFile("assets/sprites/TallnutSeed.png");
 }
 
 void ImGuiMenu::SetupContext(SDL_Window* window, SDL_GLContext gl_context, const char * glsl_version) {
@@ -179,7 +179,7 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
            PlantSpawnScript::plantType = (int)PlantTypes::Sunflower;
            PlantSpawnScript::shouldSpawn = true;
         }
-        
+
         ImGui::SameLine();
         if (ImGui::ImageButton(reinterpret_cast<void*>(wallnutSeed->GetId()), ImVec2{ (float)wallnutSeed->GetWidth(), (float)wallnutSeed->GetHeight() }))
         {

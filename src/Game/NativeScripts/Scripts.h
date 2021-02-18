@@ -44,13 +44,15 @@ public:
     virtual void Update(float deltaTime) override;
     
 private:
+    int health;
+    bool placed;
     float x;
     float y;
     float spriteWidth;
     float spriteHeight;
 
-    bool placed;
-    ImGuiIO io;
+    float damageInterval = 10.0f;
+    float nextDamageIn = 1.0f;
 };
 
 class PlantSpawnScript : public NativeScript 
@@ -79,7 +81,7 @@ private:
 class BulletScript : public NativeScript
 {
 public:
-   // virtual void OnInit() override;
+    // virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
 private:
@@ -96,6 +98,28 @@ private:
     float spawnInterval = .5f, nextSpawnIn = 1.0f;
     Ref<TextureGPU> bullet;
     Sprite bulletSprite;
+};
+
+class SunScript : public NativeScript
+{
+public:
+    // virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+private:
+    float sunFallSpeed = 500.0f;
+};
+
+class SunSpawnScript : public NativeScript
+{
+public:
+    virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+private:
+    float spawnInterval = 2.0f, nextSpawnIn = 1.0f;
+    Ref<TextureGPU> sun;
+    Sprite sunSprite;
 };
 
 class ZombieScript : public NativeScript 

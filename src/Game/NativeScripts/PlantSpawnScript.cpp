@@ -31,32 +31,31 @@ void PlantSpawnScript::OnSpawnPress()
 {
 	int x, y;
 	SDL_GetMouseState(&x, &y);
-	std::cout << x << " " << y << std::endl;
 
 	auto plantEntity = CreateGameObject();
 	plantEntity->assign<TransformComponent>(x, 720 - y, DRAW_LAYER_10);
 	Collider* plantBoxCollider = nullptr;
 	switch (plantType)
 	{
-	case (int)PlantTypes::Peashooter:
-		plantEntity->assign<RenderComponent>(CreateRef<Sprite>(peashooterSprite));
-		plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) peashooter->GetWidth(), (float) peashooter->GetHeight());
-		//add shooter component
-		break;
-	case (int)PlantTypes::Sunflower:
-		plantEntity->assign<RenderComponent>(CreateRef<Sprite>(sunflowerSprite));
-		plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) sunflower->GetWidth(), (float) sunflower->GetHeight());
-		break;
-	case (int)PlantTypes::Wallnut:
-		plantEntity->assign<RenderComponent>(CreateRef<Sprite>(wallnutSprite));
-		plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) wallnut->GetWidth(), (float) wallnut->GetHeight());
-		break;
-	case (int)PlantTypes::Tallnut:
-		plantEntity->assign<RenderComponent>(CreateRef<Sprite>(tallnutSprite));
-		plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) tallnut->GetWidth(), (float) tallnut->GetHeight());
-		break;
-	default:
-		break;
+		case (int)PlantTypes::Peashooter:
+			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(peashooterSprite));
+			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) peashooter->GetWidth(), (float) peashooter->GetHeight());
+			//add shooter component
+			break;
+		case (int)PlantTypes::Sunflower:
+			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(sunflowerSprite));
+			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) sunflower->GetWidth(), (float) sunflower->GetHeight());
+			break;
+		case (int)PlantTypes::Wallnut:
+			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(wallnutSprite));
+			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) wallnut->GetWidth(), (float) wallnut->GetHeight());
+			break;
+		case (int)PlantTypes::Tallnut:
+			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(tallnutSprite));
+			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) tallnut->GetWidth(), (float) tallnut->GetHeight());
+			break;
+		default:
+			break;
 	}
 
 	plantBoxCollider->collisionLayer = CollisionLayers::PLANT;

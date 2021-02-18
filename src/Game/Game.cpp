@@ -22,7 +22,8 @@ void Game::Init() {
 	for (int i = 0; i < 5; i++) {
 		auto zombieSpawn = CreateGameObject();
 		zombieSpawn->assign<TransformComponent>(800.0f, BOTTOM_ROW_Y + ROW_SIZE * i, DRAW_LAYER_9 - 0.1f * i);
-		zombieSpawn->assign<NativeScriptComponent>()->Bind<ZombieSpawnScript>();
+		auto script = zombieSpawn->assign<NativeScriptComponent>()->Bind<ZombieSpawnScript>();
+		script->SetCollisionLayer(CollisionLayers::LAYER_1 << i);
 
 		auto groundEntity = CreateGameObject();
 		groundEntity->assign<TransformComponent>(0.0f, BOTTOM_ROW_Y + ROW_SIZE * i, DRAW_LAYER_9 - 0.1f * i);

@@ -10,6 +10,7 @@ ECS_TYPE_IMPLEMENTATION;
 #include "Core/Common.h"
 #include "Rendering/Sprite.h"
 #include "../Game.h"
+#include "Physics/Colliders.h"
 
 
 class NativeScript {
@@ -37,12 +38,12 @@ private:
 
 enum class PlantTypes { None, Peashooter, Sunflower, Wallnut, Tallnut };
 
-class PlantScript : public NativeScript 
+class PlantScript : public NativeScript
 {
 public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
-    
+
 private:
     float x;
     float y;
@@ -53,12 +54,12 @@ private:
     ImGuiIO io;
 };
 
-class PlantSpawnScript : public NativeScript 
+class PlantSpawnScript : public NativeScript
 {
 public:
     static bool shouldSpawn;
     static int plantType;
-    
+
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
@@ -98,7 +99,7 @@ private:
     Sprite bulletSprite;
 };
 
-class ZombieScript : public NativeScript 
+class ZombieScript : public NativeScript
 {
 public:
     virtual void Update(float deltaTime) override;
@@ -113,13 +114,18 @@ public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
+    void SetCollisionLayer(CollisionLayers collisionLayer) {
+        this->collisionLayer = collisionLayer;
+    }
+
 private:
     float waveInterval = 5.0f, nextWaveIn = 3.0f;
     Ref<TextureGPU> zombie;
     Sprite zombieSprite;
+    CollisionLayers collisionLayer;
 };
 
-class LawnMowerScript : public NativeScript 
+class LawnMowerScript : public NativeScript
 {
 public:
     virtual void Update(float deltaTime) override;

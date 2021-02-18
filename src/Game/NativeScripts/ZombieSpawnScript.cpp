@@ -21,7 +21,8 @@ void ZombieSpawnScript::Update(float deltaTime) {
         zombieEntity->assign<RenderComponent>(CreateRef<Sprite>(zombieSprite));
         Collider * zombieBoxCollider = new BoxCollider(zombieEntity, 0, 0, (float)zombie->GetWidth(), (float)zombie->GetHeight());
         zombieBoxCollider->collisionLayer = CollisionLayers::ZOMBIE;
-        zombieBoxCollider->collidesWithLayers = CollisionLayers::GROUND
+        zombieBoxCollider->collidesWithLayers = collisionLayer
+            | CollisionLayers::GROUND
             | CollisionLayers::PLANT
             | CollisionLayers::PROJECTILE;
         zombieEntity->assign<ColliderComponent>(Ref<Collider>(zombieBoxCollider));

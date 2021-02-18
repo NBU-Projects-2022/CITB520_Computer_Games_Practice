@@ -18,6 +18,12 @@ inline constexpr ENUM_TYPE operator|(const ENUM_TYPE & a, const ENUM_TYPE & b) {
 inline constexpr ENUM_TYPE operator&(const ENUM_TYPE & a, const ENUM_TYPE & b) { \
     return static_cast<ENUM_TYPE>(static_cast<int>(a) & static_cast<int>(b)); \
 }\
+inline constexpr ENUM_TYPE operator<<(const ENUM_TYPE & a, const int & b) { \
+    return static_cast<ENUM_TYPE>(static_cast<int>(a) << b); \
+}\
+inline constexpr ENUM_TYPE operator>>(const ENUM_TYPE & a, const int & b) { \
+    return static_cast<ENUM_TYPE>(static_cast<int>(a) >> b); \
+}\
 inline constexpr bool operator||(const ENUM_TYPE & a, const ENUM_TYPE & b) { \
     return static_cast<int>(a) || static_cast<int>(b); \
 }

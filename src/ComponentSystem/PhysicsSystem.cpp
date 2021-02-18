@@ -20,8 +20,10 @@ void PhysicsSystem::tick(ECS::World* world, float deltaTime) {
             auto & otherEntity = objects[j];
             const auto & otherCollider = otherEntity->get<ColliderComponent>();
 
-            if (0 == int(entityCollider->collider->collidesWithLayers & otherCollider->collider->collisionLayer)
-                && 0 == int(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer)
+            if (0 == int(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer & CollisionLayers::LAYER_MASK)
+                // if on the same layer
+                || (0 == int(entityCollider->collider->collidesWithLayers & otherCollider->collider->collisionLayer)
+                    && 0 == int(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer))
             ) {
                 continue;
             }

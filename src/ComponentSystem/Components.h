@@ -72,10 +72,12 @@ struct NativeScriptComponent {
     {}
 
     template<typename T>
-    void Bind() {
+    T* Bind() {
         if (!nativeScript.get()) {
             nativeScript = CreateRef<T>();
         }
+
+        return reinterpret_cast<T*>(nativeScript.get());
     }
 
 protected:

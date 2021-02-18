@@ -12,11 +12,18 @@ enum class ColliderType {
 };
 
 enum class CollisionLayers : int {
-    GROUND = 1 >> 0,
-    ZOMBIE = 1 >> 1,
-    PLANT = 1 >> 2,
-    PROJECTILE = 1 >> 3,
-    SUN = 1 >> 4
+    GROUND = (1 << 0),
+    ZOMBIE = (1 << 1),
+    PLANT = (1 << 2),
+    PROJECTILE = (1 << 3),
+    SUN = (1 << 4),
+
+    LAYER_MASK = (31 << 15),
+    LAYER_1 = (1 << 15),
+    LAYER_2 = (1 << 16),
+    LAYER_3 = (1 << 17),
+    LAYER_4 = (1 << 18),
+    LAYER_5 = (1 << 19),
 };
 DEFINE_ENUM_OPERATORS(CollisionLayers)
 

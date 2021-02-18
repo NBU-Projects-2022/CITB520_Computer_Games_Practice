@@ -9,6 +9,12 @@ ECS_TYPE_IMPLEMENTATION;
 
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 800;
+const int ROWS = 5;  // how many rows the lawn has
+const int COLS = 8;  // how many cols the lawn has
+const int LAWN_X = 230;  // starting x of the lawn
+const int LAWN_Y = 30;  // starting y of the lawn
+const int PLOT_W = 95;  // width of a a single plot of land
+const int PLOT_H = 100;  // height of a single plot of land
 
 const float DRAW_LAYER_0 = 0.0f;
 const float DRAW_LAYER_1 = 0.1f;
@@ -40,7 +46,8 @@ class Game {
 public:
     Game(ECS::World* world)
         : world(world)
-    {}
+    {
+    }
 
     //Level level;
 

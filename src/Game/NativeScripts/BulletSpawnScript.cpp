@@ -26,10 +26,9 @@ void BulletSpawnScript::Update(float deltaTime)
         bulletEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
         bulletEntity->assign<RenderComponent>(CreateRef<Sprite>(bulletSprite));
         Collider* bulletCircleCollider = new CircleCollider(bulletEntity, (float) bullet->GetWidth());
-        bulletCircleCollider->collisionLayer = CollisionLayers::PLANT;
-        bulletCircleCollider->collidesWithLayers = CollisionLayers::GROUND
-            | CollisionLayers::PLANT
-            | CollisionLayers::PROJECTILE;
+        bulletCircleCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::PROJECTILE;
+        bulletCircleCollider->collidesWithLayers = CollisionLayers::LAYER_MASK
+            | CollisionLayers::ZOMBIE;
         bulletEntity->assign<ColliderComponent>(Ref<Collider>(bulletCircleCollider));
         bulletEntity->assign<NativeScriptComponent>()->Bind<BulletScript>();
         auto rigidBody = bulletEntity->assign<RigidBodyComponent>();

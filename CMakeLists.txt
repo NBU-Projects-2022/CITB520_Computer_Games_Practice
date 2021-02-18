@@ -40,7 +40,9 @@ add_executable(${PROJECT_NAME}
     "src/Rendering/OpenGLWrapper/VAO.cpp"
     "src/Rendering/OpenGLWrapper/DebugGL.cpp"
  	"src/Game/NativeScripts/BulletSpawnScript.cpp" 
-	"src/Game/NativeScripts/BulletScript.cpp"   "src/Game/NativeScripts/SunScript.cpp" "src/Game/NativeScripts/SunSpawnScript.cpp")
+	"src/Game/NativeScripts/BulletScript.cpp"   
+    "src/Game/NativeScripts/SunScript.cpp" 
+    "src/Game/NativeScripts/SunSpawnScript.cpp")
 
 # OpenGL
 find_package(OpenGL REQUIRED)

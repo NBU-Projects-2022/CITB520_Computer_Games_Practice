@@ -43,18 +43,19 @@ void PlantScript::Update(float deltaTime)
             
             switch (PlantSpawnScript::plantType)
             {
-                case (int)PlantTypes::Peashooter:
+                case (int)PlantTypes::Peashooter: {
                     auto bulletSpawn = CreateGameObject();
                     bulletSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
                     bulletSpawn->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
                     break;
-                case (int)PlantTypes::Sunflower:
+                }
+                case (int)PlantTypes::Sunflower: {
                     auto sunSpawn = CreateGameObject();
                     sunSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
                     sunSpawn->assign<NativeScriptComponent>()->Bind<SunSpawnScript>();
                     break;
+                }
             }
-
         }
         else
         {

@@ -24,7 +24,7 @@ void Game::Init() {
 	for (int i = 0; i < ROWS; i++) {
 		// Create a zombie spawner for each row
 		auto zombieSpawn = CreateGameObject();
-		zombieSpawn->assign<TransformComponent>(800.0f, BOTTOM_ROW_Y + ROW_SIZE * i, DRAW_LAYER_9 - 0.1f * i);
+		zombieSpawn->assign<TransformComponent>(LAWN_X + COLS * PLOT_W, BOTTOM_ROW_Y + ROW_SIZE * i, DRAW_LAYER_9 - 0.1f * i);
 		auto script = zombieSpawn->assign<NativeScriptComponent>()->Bind<ZombieSpawnScript>();
 		script->SetCollisionLayer(CollisionLayers::LAYER_1 << i);
 

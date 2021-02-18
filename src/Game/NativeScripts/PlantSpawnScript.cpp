@@ -58,8 +58,9 @@ void PlantSpawnScript::OnSpawnPress()
 			break;
 	}
 
-	plantBoxCollider->collisionLayer = CollisionLayers::PLANT;
-	plantBoxCollider->collidesWithLayers = CollisionLayers::GROUND
+	plantBoxCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::PLANT;
+	plantBoxCollider->collidesWithLayers = CollisionLayers::LAYER_MASK 
+		| CollisionLayers::GROUND
 		| CollisionLayers::ZOMBIE
 		| CollisionLayers::PROJECTILE;
 	plantEntity->assign<ColliderComponent>(Ref<Collider>(plantBoxCollider));

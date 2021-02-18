@@ -52,7 +52,7 @@ private:
     float spriteWidth;
     float spriteHeight;
 
-    float damageInterval = 10.0f;
+    float damageInterval = 1.0f;
     float nextDamageIn = 1.0f;
 };
 

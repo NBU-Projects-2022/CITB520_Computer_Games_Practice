@@ -52,8 +52,17 @@ void PlantScript::Update(float deltaTime)
             
             if (isOverALandPlot && isNotOverAPlant)
             {
+                // setup actual collision box size
+                auto* collider = reinterpret_cast<BoxCollider*>(GetComponent<ColliderComponent>().collider.get());
+                collider->_min[0] = 0;
+                collider->_min[1] = 0;
+                collider->_max[0] = PLOT_W;
+                collider->_max[1] = PLOT_H;
+
+                // snap to land plot
                 GetComponent<TransformComponent>().position.x = plotPos->x;
                 GetComponent<TransformComponent>().position.y = plotPos->y;
+                GetComponent<TransformComponent>().position.z = plotPos->z;
 
                 placed = true;
                 auto& position = GetComponent<TransformComponent>().position;

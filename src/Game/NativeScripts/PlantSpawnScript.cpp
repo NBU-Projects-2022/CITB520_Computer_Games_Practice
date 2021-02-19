@@ -94,7 +94,7 @@ void PlantSpawnScript::OnSpawnPress()
 
 	plantEntity->assign<TransformComponent>(x + xOffset, 720 - y + yOffset, DRAW_LAYER_10);
 
-	Collider* plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float)PLOT_W, (float)PLOT_H);
+	Collider* plantBoxCollider = new BoxCollider(plantEntity, PLOT_W / 2, PLOT_H / 2, 1, 1);
 	plantBoxCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::PLANT;
 	plantBoxCollider->collidesWithLayers = CollisionLayers::LAYER_MASK 
 										 | CollisionLayers::GROUND

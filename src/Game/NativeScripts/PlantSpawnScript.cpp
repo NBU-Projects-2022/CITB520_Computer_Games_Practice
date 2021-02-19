@@ -38,7 +38,6 @@ void PlantSpawnScript::OnSpawnPress()
 	{
 		case (int)PlantTypes::Peashooter:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(peashooterSprite));
-			// TODO: add shooter component
 			break;
 		case (int)PlantTypes::Sunflower:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(sunflowerSprite));

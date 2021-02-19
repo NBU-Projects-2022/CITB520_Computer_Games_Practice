@@ -71,7 +71,6 @@ void PlantScript::Update(float deltaTime)
 
     }
 
-
 }
 
 void PlantScript::PlacePlantLogic() {

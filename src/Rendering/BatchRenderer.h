@@ -9,7 +9,7 @@ public:
 
     // void UpdateProjection(con)
 
-    void Draw(BatchRecorder & batchRecorder);
+    void Draw(BatchRecorder & batchRecorder, SpriteMaterial & spriteMaterial);
 
 private:
     // SpriteMaterial spriteMaterial;

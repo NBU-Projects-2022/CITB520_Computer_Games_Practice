@@ -9,6 +9,7 @@
 #include "ComponentSystem/Components.h"
 #include "Core/AssetManager.h"
 #include "Physics/Colliders.h"
+#include "Game/Game.h"
 
 int PlantSpawnScript::plantType = (int)PlantTypes::None;
 bool PlantSpawnScript::shouldSpawn = false;
@@ -33,36 +34,72 @@ void PlantSpawnScript::OnSpawnPress()
 	SDL_GetMouseState(&x, &y);
 
 	auto plantEntity = CreateGameObject();
-	plantEntity->assign<TransformComponent>(x, 720 - y, DRAW_LAYER_10);
-	Collider* plantBoxCollider = nullptr;
+	int w, h;
 	switch (plantType)
 	{
 		case (int)PlantTypes::Peashooter:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(peashooterSprite));
-			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) peashooter->GetWidth(), (float) peashooter->GetHeight());
-			//add shooter component
+			w = peashooter->GetWidth(), h = peashooter->GetHeight();
+			// TODO: add shooter component
 			break;
 		case (int)PlantTypes::Sunflower:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(sunflowerSprite));
-			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) sunflower->GetWidth(), (float) sunflower->GetHeight());
+			w = sunflower->GetWidth(), h = sunflower->GetHeight();
 			break;
 		case (int)PlantTypes::Wallnut:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(wallnutSprite));
-			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) wallnut->GetWidth(), (float) wallnut->GetHeight());
+			w = wallnut->GetWidth(), h = wallnut->GetHeight();
 			break;
 		case (int)PlantTypes::Tallnut:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(tallnutSprite));
-			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) tallnut->GetWidth(), (float) tallnut->GetHeight());
+			w = tallnut->GetWidth(), h = tallnut->GetHeight();
 			break;
 		default:
+			// TODO handle this, we should not reach here
 			break;
 	}
+	// Here we offsetthe sprite around the collision box.
+	// We compare the sizes of the collision box (which has the same size as a single land plot) and the sprite.
+	// Whichever is smaller gets centered within the bigger, with the exception where
+	// if the sprite is taller than the collision height, then we want to keep the collision at the bottom of the sprite,
+	// rather than centering it vertically.
 
+	bool plotWidthIsLarger = false;
+	bool plotHeightIsLarger = false;
+	float xOffset = 0.0f;
+	float yOffset = 0.0f;
+
+	if (PLOT_W > w) {
+		// center sprite within collision horizontally
+		plotWidthIsLarger = true;
+		xOffset = (PLOT_W - w) / 2;
+	}
+	else if (w > PLOT_W) {
+		// center collision within sprite horizontally
+		xOffset = (w - PLOT_W) / 2;
+	}
+	if (PLOT_H > h) {
+		// center sprite within collision vertically
+		plotHeightIsLarger = true;
+		yOffset = (PLOT_H - h) / 2;
+	}
+	else if (h > PLOT_H) {
+		// send collision to the bottom of the sprite
+		yOffset = h - PLOT_H;
+	}
+
+	// offset is inverted if a plot dimension is smaller than the respective sprite dimension
+	if (!plotWidthIsLarger && xOffset != 0.0f) xOffset *= -1;
+	if (!plotHeightIsLarger && yOffset != 0.0f) yOffset *= -1;
+
+	plantEntity->assign<TransformComponent>(x + xOffset, 720 - y + yOffset, DRAW_LAYER_10);
+
+	Collider* plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float)PLOT_W, (float)PLOT_H);
 	plantBoxCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::PLANT;
 	plantBoxCollider->collidesWithLayers = CollisionLayers::LAYER_MASK 
-		| CollisionLayers::GROUND
-		| CollisionLayers::ZOMBIE
-		| CollisionLayers::PROJECTILE;
+										 | CollisionLayers::GROUND
+										 | CollisionLayers::ZOMBIE
+										 | CollisionLayers::PROJECTILE;
 	plantEntity->assign<ColliderComponent>(Ref<Collider>(plantBoxCollider));
 	plantEntity->assign<NativeScriptComponent>()->Bind<PlantScript>();
 	auto rigidBody = plantEntity->assign<RigidBodyComponent>();

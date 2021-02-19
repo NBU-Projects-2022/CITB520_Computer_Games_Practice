@@ -18,8 +18,6 @@ void PlantScript::OnInit()
     spriteWidth = GetComponent<RenderComponent>().sprite->width;
     spriteHeight = GetComponent<RenderComponent>().sprite->height;
 
-    
-
     health = 3;
 }
 
@@ -36,24 +34,44 @@ void PlantScript::Update(float deltaTime)
         }
         else if (io.MouseClicked[0])
         {
-            //restrictions for placing plants go here
-            placed = true;
+            bool isOverALandPlot = false;
+            bool isNotOverAPlant = true;
+            glm::vec3* plotPos = nullptr;
 
-            auto& position = GetComponent<TransformComponent>().position;
-            
-            switch (PlantSpawnScript::plantType)
+            //restrictions for placing plants go here
+            for (auto& collision : GetComponent<ColliderComponent>().collider->collisions)
             {
-                case (int)PlantTypes::Peashooter: {
-                    auto bulletSpawn = CreateGameObject();
-                    bulletSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
-                    bulletSpawn->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
-                    break;
+                if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::GROUND) > 0) {
+                    isOverALandPlot = true;
+                    plotPos = &collision.otherEntity->get<TransformComponent>()->position;
                 }
-                case (int)PlantTypes::Sunflower: {
-                    auto sunSpawn = CreateGameObject();
-                    sunSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
-                    sunSpawn->assign<NativeScriptComponent>()->Bind<SunSpawnScript>();
-                    break;
+                if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::PLANT) > 0) {
+                    isNotOverAPlant = false;
+                }
+            }
+            
+            if (isOverALandPlot && isNotOverAPlant)
+            {
+                GetComponent<TransformComponent>().position.x = plotPos->x;
+                GetComponent<TransformComponent>().position.y = plotPos->y;
+
+                placed = true;
+                auto& position = GetComponent<TransformComponent>().position;
+
+                switch (PlantSpawnScript::plantType)
+                {
+                    case (int)PlantTypes::Peashooter: {
+                        auto bulletSpawn = CreateGameObject();
+                        bulletSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
+                        bulletSpawn->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
+                        break;
+                    }
+                    case (int)PlantTypes::Sunflower: {
+                        auto sunSpawn = CreateGameObject();
+                        sunSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
+                        sunSpawn->assign<NativeScriptComponent>()->Bind<SunSpawnScript>();
+                        break;
+                    }
                 }
             }
         }
@@ -72,27 +90,22 @@ void PlantScript::Update(float deltaTime)
         for (auto& collision : GetComponent<ColliderComponent>().collider->collisions)
         {
             //check if this works
-            if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0)
-            {
+            if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0) {
                 collidesWithZombie = true;
-
                 nextDamageIn -= deltaTime;
 
-                if (nextDamageIn <= .0f)
-                {
+                if (nextDamageIn <= .0f) {
                     nextDamageIn = damageInterval;
                     health--;
 
-                    if (health == 0)
-                    {
+                    if (health == 0) {
                         shouldDestroy = true;
                     }
                 }
             }
         }
 
-        if (!collidesWithZombie)
-        {
+        if (!collidesWithZombie) {
             nextDamageIn = damageInterval;
         }
              

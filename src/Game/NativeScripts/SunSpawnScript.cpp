@@ -20,18 +20,21 @@ void SunSpawnScript::OnInit()
 void SunSpawnScript::Update(float deltaTime)
 {
     nextSpawnIn -= deltaTime;
-    if (nextSpawnIn < 0) {
+    if (nextSpawnIn < 0)
+    {
         auto& position = GetComponent<TransformComponent>().position;
         auto sunEntity = CreateGameObject();
-        sunEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
+        
+        sunEntity->assign<TransformComponent>(position);
         sunEntity->assign<RenderComponent>(CreateRef<Sprite>(sunSprite));
+       
         Collider* sunCircleCollider = new CircleCollider(sunEntity, (float)sun->GetWidth());
         sunCircleCollider->collisionLayer = CollisionLayers::PLANT;
-        sunCircleCollider->collidesWithLayers = CollisionLayers::GROUND
-            | CollisionLayers::PLANT
-            | CollisionLayers::PROJECTILE;
+        sunCircleCollider->collidesWithLayers = CollisionLayers::GROUND | CollisionLayers::PLANT | CollisionLayers::PROJECTILE;
+       
         sunEntity->assign<ColliderComponent>(Ref<Collider>(sunCircleCollider));
         sunEntity->assign<NativeScriptComponent>()->Bind<SunScript>();
+      
         auto rigidBody = sunEntity->assign<RigidBodyComponent>();
         rigidBody->isKinematic = true;
 

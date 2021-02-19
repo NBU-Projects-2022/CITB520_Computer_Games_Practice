@@ -20,17 +20,21 @@ void BulletSpawnScript::OnInit()
 void BulletSpawnScript::Update(float deltaTime)
 {
     nextSpawnIn -= deltaTime;
-    if (nextSpawnIn < 0) {
+    if (nextSpawnIn < 0) 
+    {
         auto& position = GetComponent<TransformComponent>().position;
         auto bulletEntity = CreateGameObject();
-        bulletEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
+    
+        bulletEntity->assign<TransformComponent>(position);
         bulletEntity->assign<RenderComponent>(CreateRef<Sprite>(bulletSprite));
+        
         Collider* bulletCircleCollider = new CircleCollider(bulletEntity, (float) bullet->GetWidth());
         bulletCircleCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::PROJECTILE;
-        bulletCircleCollider->collidesWithLayers = CollisionLayers::LAYER_MASK
-            | CollisionLayers::ZOMBIE;
+        bulletCircleCollider->collidesWithLayers = CollisionLayers::LAYER_MASK | CollisionLayers::ZOMBIE;
+       
         bulletEntity->assign<ColliderComponent>(Ref<Collider>(bulletCircleCollider));
         bulletEntity->assign<NativeScriptComponent>()->Bind<BulletScript>();
+        
         auto rigidBody = bulletEntity->assign<RigidBodyComponent>();
         rigidBody->isKinematic = true;
 

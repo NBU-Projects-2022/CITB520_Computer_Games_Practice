@@ -54,7 +54,7 @@ private:
     float spriteWidth;
     float spriteHeight;
 
-    float damageInterval = 1.0f;
+    float damageInterval = 30.0f;
     float nextDamageIn = 1.0f;
 
     void PlacePlantLogic();
@@ -113,7 +113,9 @@ public:
     virtual void Update(float deltaTime) override;
 
 private:
-    float sunFallSpeed = 500.0f;
+    float sunFloatSpeed = 400.f;
+    float sunFloatDistance = 100.f;
+    float sunFloatCurrDistance = 0.f;
 };
 
 class SunSpawnScript : public NativeScript
@@ -122,10 +124,10 @@ public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
+    Sprite sunSprite;
 private:
     float spawnInterval = 2.0f, nextSpawnIn = 1.0f;
     Ref<TextureGPU> sun;
-    Sprite sunSprite;
 };
 
 class ZombieScript : public NativeScript

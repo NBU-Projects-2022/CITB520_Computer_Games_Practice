@@ -157,15 +157,32 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
         ImGui::Text("Game Info");
         ImGui::Separator();
 
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::Text("Game objects count %d", gameState.world->getCount());
-        ImGui::Text("money %d", GameState::Instance().money);
+        static bool showDebugInfo = false;
 
-        ImGui::Separator();
+        if (showDebugInfo) {
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::SameLine();
+            ImGui::Text("Game objects count %d", gameState.world->getCount());
+            ImGui::Separator();
+        }
 
         if (ImGui::Button("Pause")) {
             engineBase->PauseGame();
         }
+
+        ImGui::SameLine();
+        if (!showDebugInfo && ImGui::Button("Show Debug Info")) {
+            showDebugInfo = true;
+        } else if (showDebugInfo &&  ImGui::Button("Hide Debug Info")) {
+            showDebugInfo = false;
+        }
+
+        ImGui::SameLine();
+        ImGui::Text("money %d, waves left %d, next wave %.2f, wave interval %.2f",
+            GameState::Instance().money,
+            GameState::Instance().waveCount,
+            GameState::Instance().waveTimer,
+            GameState::Instance().waveInterval);
 
         if (ImGui::ImageButton(reinterpret_cast<void*>(peashooterSeed->GetId()), ImVec2{ (float)peashooterSeed->GetWidth(), (float)peashooterSeed->GetHeight() }))
         {

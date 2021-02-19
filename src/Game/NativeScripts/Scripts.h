@@ -1,5 +1,7 @@
 #pragma once
 
+#include <random>
+
 #pragma warning(push, 0)
 #include <imgui.h>
 #pragma warning(pop)
@@ -123,7 +125,7 @@ private:
     Sprite sunSprite;
 };
 
-class ZombieScript : public NativeScript 
+class ZombieScript : public NativeScript
 {
 public:
     virtual void Update(float deltaTime) override;
@@ -138,8 +140,11 @@ public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
-    void SetCollisionLayer(CollisionLayers collisionLayer) {
-        this->collisionLayer = collisionLayer;
+    void SpawnZombie();
+
+    void SetCollisionLayer(int layerId) {
+        this->layerId = layerId;
+        collisionLayer = CollisionLayers::LAYER_1 << layerId;
     }
 
 private:
@@ -147,10 +152,27 @@ private:
     Ref<TextureGPU> zombie;
     Sprite zombieSprite;
     CollisionLayers collisionLayer;
+    int layerId;
 };
 
 class LawnMowerScript : public NativeScript
 {
 public:
     virtual void Update(float deltaTime) override;
+};
+
+class WaveControllerScript : public NativeScript
+{
+public:
+    virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+    void AddZombies(float initialZombieTime = 3.0f);
+    void AddWave();
+
+private:
+    std::default_random_engine generator;
+    const int ZOMBIES_COUNT = 5;
+    const int WAVE_ZOMBIES_COUNT = 10;
+    const float WAVE_DURATION_SPAN = 5.0f;
 };

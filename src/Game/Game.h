@@ -1,5 +1,7 @@
 #pragma once
 
+#include <queue>
+
 #include <ECS.h>
 ECS_TYPE_IMPLEMENTATION;
 
@@ -28,6 +30,12 @@ const float DRAW_LAYER_8 = 0.8f;
 const float DRAW_LAYER_9 = 0.9f;
 const float DRAW_LAYER_10 = 1.0f;
 
+struct SpawnCommand {
+    int zombieType = 0;
+    int layerId = 0;
+    float gameTime = 0.0f;
+};
+
 class GameState {
 public:
     static GameState& Instance() {
@@ -36,7 +44,15 @@ public:
     }
 
     int money = 0;
+    int spawnedZombies = 0;
+    int killedZombies = 0;
 
+    float totalGameTime = 0.0f;
+
+    float waveTimer = 15.0f;
+    float waveInterval = 30.0f;
+    int waveCount = 4;
+    std::queue<SpawnCommand> spawnCommands;
 private:
     GameState() = default;
 };

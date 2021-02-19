@@ -12,26 +12,33 @@ void ZombieSpawnScript::OnInit() {
 }
 
 void ZombieSpawnScript::Update(float deltaTime) {
-    // TODO: spawn zombies
-    nextWaveIn -= deltaTime;
-    if (nextWaveIn < 0) {
-        auto & position = GetComponent<TransformComponent>().position;
-        auto zombieEntity = CreateGameObject();
-        zombieEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
-        zombieEntity->assign<RenderComponent>(CreateRef<Sprite>(zombieSprite));
-        Collider * zombieBoxCollider = new BoxCollider(zombieEntity, 0, 0, (float)zombie->GetWidth(), (float)zombie->GetHeight());
-        zombieBoxCollider->collisionLayer = collisionLayer | CollisionLayers::ZOMBIE;
-        zombieBoxCollider->collidesWithLayers = collisionLayer
-            | CollisionLayers::GROUND
-            | CollisionLayers::PLANT
-            | CollisionLayers::PROJECTILE;
-        zombieEntity->assign<ColliderComponent>(Ref<Collider>(zombieBoxCollider));
-        zombieEntity->assign<NativeScriptComponent>()->Bind<ZombieScript>();
-        auto rigidBody = zombieEntity->assign<RigidBodyComponent>();
-        rigidBody->isKinematic = true;
-
-        nextWaveIn = waveInterval;
-
-        GameState::Instance().money += 50;
+    auto & instance = GameState::Instance();
+    auto & spawnCommands = instance.spawnCommands;
+    if (!spawnCommands.empty()) {
+        auto & front = spawnCommands.front();
+        if (front.gameTime < instance.totalGameTime && front.layerId == layerId) {
+            SpawnZombie();
+            spawnCommands.pop();
+        }
     }
+}
+
+void ZombieSpawnScript::SpawnZombie() {
+    auto & position = GetComponent<TransformComponent>().position;
+    auto zombieEntity = CreateGameObject();
+    zombieEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
+    zombieEntity->assign<RenderComponent>(CreateRef<Sprite>(zombieSprite));
+    Collider * zombieBoxCollider = new BoxCollider(zombieEntity, 0, 0, (float)zombie->GetWidth(), (float)zombie->GetHeight());
+    zombieBoxCollider->collisionLayer = collisionLayer | CollisionLayers::ZOMBIE;
+    zombieBoxCollider->collidesWithLayers = collisionLayer
+        | CollisionLayers::GROUND
+        | CollisionLayers::PLANT
+        | CollisionLayers::PROJECTILE;
+    zombieEntity->assign<ColliderComponent>(Ref<Collider>(zombieBoxCollider));
+    zombieEntity->assign<NativeScriptComponent>()->Bind<ZombieScript>();
+    auto rigidBody = zombieEntity->assign<RigidBodyComponent>();
+    rigidBody->isKinematic = true;
+
+    auto & instance = GameState::Instance();
+    ++instance.spawnedZombies;
 }

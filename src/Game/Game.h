@@ -51,7 +51,7 @@ public:
         return ins;
     }
 
-    int money = 0;
+    int money = 125;
     int spawnedZombies = 0;
     int killedZombies = 0;
 

@@ -15,8 +15,10 @@ struct Plant {
 	int cost;
 	bool isShooter;
 	bool isSpawningSuns;
-	float health;
+	float hp;
 	Ref<TextureGPU> tex;
+
+	Sprite sprite = Sprite(0, 0, tex->GetWidth(), tex->GetHeight(), tex.get());
 };
 
 struct VecPlants
@@ -24,8 +26,8 @@ struct VecPlants
 private:
 	std::vector<Plant> plants = { { (int)PlantTypes::Peashooter, 100, true, false, 3, AssetManager::LoadCachedImageFile("assets/sprites/Peashooter.png")},
 									{(int)PlantTypes::Sunflower, 50, false, true, 3, AssetManager::LoadCachedImageFile("assets/sprites/Sunflower.png")},
-									{(int)PlantTypes::Wallnut, 50, false, false, 72, AssetManager::LoadCachedImageFile("assets/sprites/Wallnut1.png")},
-									{(int)PlantTypes::Tallnut, 125, false, false, 144, AssetManager::LoadCachedImageFile("assets/sprites/Tallnut1.png")} };
+									{(int)PlantTypes::Wallnut, 50, false, false, 36, AssetManager::LoadCachedImageFile("assets/sprites/Wallnut1.png")},
+									{(int)PlantTypes::Tallnut, 125, false, false, 72, AssetManager::LoadCachedImageFile("assets/sprites/Tallnut1.png")} };
 
 
 public:
@@ -51,13 +53,13 @@ public:
 		}
 	}
 
-	bool isShooterByType(int type)
+	Sprite GetSpriteByType(int type)
 	{
 		for (auto& plant : plants)
 		{
 			if (plant.type == type)
 			{
-				return plant.isShooter;
+				return plant.sprite;
 			}
 		}
 	}

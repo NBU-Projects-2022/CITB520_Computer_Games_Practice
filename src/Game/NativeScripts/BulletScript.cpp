@@ -3,6 +3,11 @@
 #include "ComponentSystem/Components.h"
 #include <iostream>
 
+void BulletScript::OnInit()
+{
+    attackDamage = .2f;
+}
+
 void BulletScript::Update(float deltaTime)
 {
     auto& rigidBody = GetComponent<RigidBodyComponent>();
@@ -18,8 +23,7 @@ void BulletScript::Update(float deltaTime)
 
     for (auto& collision : GetComponent<ColliderComponent>().collider->collisions)
     {
-        //check if this works
-        if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0) 
+        if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0)
         {
             shouldDestroy = true;
         }

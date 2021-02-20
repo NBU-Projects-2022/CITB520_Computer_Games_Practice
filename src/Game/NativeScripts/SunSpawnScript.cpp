@@ -22,6 +22,8 @@ void SunSpawnScript::Update(float deltaTime)
     nextSpawnIn -= deltaTime;
     if (nextSpawnIn < 0)
     {
+        GameState::Instance().money += 24;
+
         auto& position = GetComponent<TransformComponent>().position;
         auto sunEntity = CreateGameObject();
         

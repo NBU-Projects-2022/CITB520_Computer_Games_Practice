@@ -29,7 +29,7 @@ void BulletSpawnScript::Update(float deltaTime)
         bulletEntity->assign<RenderComponent>(CreateRef<Sprite>(bulletSprite));
         
         Collider* bulletCircleCollider = new CircleCollider(bulletEntity, (float) bullet->GetWidth());
-        bulletCircleCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::PROJECTILE;
+        bulletCircleCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::BULLET;
         bulletCircleCollider->collidesWithLayers = CollisionLayers::LAYER_MASK | CollisionLayers::ZOMBIE;
        
         bulletEntity->assign<ColliderComponent>(Ref<Collider>(bulletCircleCollider));

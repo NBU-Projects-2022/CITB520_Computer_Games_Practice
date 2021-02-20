@@ -8,7 +8,19 @@
 #include "ComponentSystem/Components.h"
 
 
+void ZombieScript::OnInit()
+{
+    hp = 2.f;
+    attackDamage = 1.f;
+}
+
 void ZombieScript::Update(float deltaTime) {
+    
+    if (hp <= 0)
+    {
+        shouldDestroy = true;
+    }
+    
     auto & rigidBody = GetComponent<RigidBodyComponent>();
 
     bool collidesWithPlant = false;
@@ -19,12 +31,30 @@ void ZombieScript::Update(float deltaTime) {
         {
             collidesWithPlant = true;
             rigidBody.velocity.x = 0;
+
+            nextAttackIn -= deltaTime;
+            if (nextAttackIn <= 0)
+            {
+                collision.otherEntity->get<NativeScriptComponent>()->nativeScript->hp -= attackDamage;
+                nextAttackIn = attackSpeed;
+            }
+        } 
+        
+        if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::BULLET) > 0)
+        {
+            hp -= collision.otherEntity->get<NativeScriptComponent>()->nativeScript->attackDamage;
+        }
+
+         if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::LAWNMOWER) > 0)
+        {
+            shouldDestroy = true;
         }
     }
 
     if (!collidesWithPlant)
     {
         rigidBody.velocity.x = -zombieSpeed;
+        nextAttackIn = 1.f;
 
     }
     // ImGuiIO& io = ImGui::GetIO();

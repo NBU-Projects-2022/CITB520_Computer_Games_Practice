@@ -31,6 +31,11 @@ void Game::Init() {
 		zombieSpawn->assign<TransformComponent>(LAWN_X + COLS * PLOT_W, BOTTOM_ROW_Y + ROW_SIZE * i, DRAW_LAYER_9 - 0.1f * i);
 		auto script = zombieSpawn->assign<NativeScriptComponent>()->Bind<ZombieSpawnScript>();
 		script->SetCollisionLayer(i);
+		
+		// Create a lawn mower for each row
+		auto lawnMowerEntity = CreateGameObject();
+		lawnMowerEntity->assign<TransformComponent>(LAWN_X, BOTTOM_ROW_Y + ROW_SIZE * i, DRAW_LAYER_9 - 0.1f * i);
+		lawnMowerEntity->assign<NativeScriptComponent>()->Bind<LawnMowerScript>();
 
 		for (int j = 0; j < COLS; j++) {
 			auto groundEntity = CreateGameObject();

@@ -17,6 +17,8 @@ enum class CollisionLayers : int {
     PLANT = (1 << 2),
     PROJECTILE = (1 << 3),
     SUN = (1 << 4),
+    BULLET = (1 << 5),
+    LAWNMOWER = (1 << 6),
 
     LAYER_MASK = (31 << 15),
     LAYER_1 = (1 << 15),

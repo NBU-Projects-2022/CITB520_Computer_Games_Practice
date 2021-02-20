@@ -28,13 +28,13 @@ void ZombieSpawnScript::SpawnZombie() {
     auto zombieEntity = CreateGameObject();
     zombieEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
     zombieEntity->assign<RenderComponent>(CreateRef<Sprite>(zombieSprite));
-    Collider * zombieBoxCollider = new BoxCollider(zombieEntity, 0, 0, (float)zombie->GetWidth(), PLOT_H);
+    Collider * zombieBoxCollider = new BoxCollider(zombieEntity, 0, 0, (float)zombie->GetWidth(), (float)zombie->GetHeight());
     zombieBoxCollider->debugColor = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
     zombieBoxCollider->collisionLayer = collisionLayer | CollisionLayers::ZOMBIE;
     zombieBoxCollider->collidesWithLayers = collisionLayer
         | CollisionLayers::GROUND
         | CollisionLayers::PLANT
-        | CollisionLayers::PROJECTILE;
+        | CollisionLayers::BULLET;
     zombieEntity->assign<ColliderComponent>(Ref<Collider>(zombieBoxCollider));
     zombieEntity->assign<NativeScriptComponent>()->Bind<ZombieScript>();
     auto rigidBody = zombieEntity->assign<RigidBodyComponent>();

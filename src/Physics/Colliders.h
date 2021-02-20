@@ -15,10 +15,9 @@ enum class CollisionLayers : int {
     GROUND = (1 << 0),
     ZOMBIE = (1 << 1),
     PLANT = (1 << 2),
-    PROJECTILE = (1 << 3),
+    BULLET = (1 << 3),
     SUN = (1 << 4),
-    BULLET = (1 << 5),
-    LAWNMOWER = (1 << 6),
+    LAWNMOWER = (1 << 5),
 
     LAYER_MASK = (31 << 15),
     LAYER_1 = (1 << 15),

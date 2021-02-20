@@ -160,11 +160,18 @@ class LawnMowerScript : public NativeScript
 public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
+
+    void SetCollisionLayer(int layerId) {
+        this->layerId = layerId;
+        collisionLayer = CollisionLayers::LAYER_1 << layerId;
+    }
     
 private:
     Ref<TextureGPU> lawnMower;
     Sprite lawnMowerSprite;
     float speed = 400.f;
+    CollisionLayers collisionLayer;
+    int layerId;
 };
 
 class WaveControllerScript : public NativeScript

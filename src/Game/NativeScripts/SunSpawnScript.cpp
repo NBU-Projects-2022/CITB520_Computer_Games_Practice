@@ -31,8 +31,8 @@ void SunSpawnScript::Update(float deltaTime)
         sunEntity->assign<RenderComponent>(CreateRef<Sprite>(sunSprite));
        
         Collider* sunCircleCollider = new CircleCollider(sunEntity, (float)sun->GetWidth());
-        sunCircleCollider->collisionLayer = CollisionLayers::PLANT;
-        sunCircleCollider->collidesWithLayers = CollisionLayers::GROUND | CollisionLayers::PLANT | CollisionLayers::PROJECTILE;
+      //  sunCircleCollider->collisionLayer = CollisionLayers::PLANT;
+        //sunCircleCollider->collidesWithLayers = CollisionLayers::GROUND | CollisionLayers::PLANT | CollisionLayers::PROJECTILE;
        
         sunEntity->assign<ColliderComponent>(Ref<Collider>(sunCircleCollider));
         sunEntity->assign<NativeScriptComponent>()->Bind<SunScript>();

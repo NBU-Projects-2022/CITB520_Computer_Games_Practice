@@ -35,7 +35,8 @@ void Game::Init() {
 		// Create a lawn mower for each row
 		auto lawnMowerEntity = CreateGameObject();
 		lawnMowerEntity->assign<TransformComponent>(LAWN_X, BOTTOM_ROW_Y + ROW_SIZE * i, DRAW_LAYER_9 - 0.1f * i);
-		lawnMowerEntity->assign<NativeScriptComponent>()->Bind<LawnMowerScript>();
+		auto mowerScript = lawnMowerEntity->assign<NativeScriptComponent>()->Bind<LawnMowerScript>();
+		mowerScript->SetCollisionLayer(i);
 
 		for (int j = 0; j < COLS; j++) {
 			auto groundEntity = CreateGameObject();

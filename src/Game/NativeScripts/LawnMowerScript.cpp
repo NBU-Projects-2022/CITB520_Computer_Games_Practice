@@ -17,8 +17,8 @@ void LawnMowerScript::OnInit()
 
 	Collider* lawnMowerBoxCollider = new BoxCollider(entity, 0, 0, lawnMower->GetWidth(), PLOT_H);
 	lawnMowerBoxCollider->debugColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	lawnMowerBoxCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::LAWNMOWER;
-	lawnMowerBoxCollider->collidesWithLayers = CollisionLayers::LAYER_MASK | CollisionLayers::ZOMBIE;
+	lawnMowerBoxCollider->collisionLayer = collisionLayer | CollisionLayers::LAWNMOWER;
+	lawnMowerBoxCollider->collidesWithLayers = collisionLayer | CollisionLayers::ZOMBIE;
 	entity->assign<ColliderComponent>(Ref<Collider>(lawnMowerBoxCollider));
 
 	auto rigidBody = entity->assign<RigidBodyComponent>();

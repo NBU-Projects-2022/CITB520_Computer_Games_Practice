@@ -1,5 +1,7 @@
 #pragma once
 
+#include <random>
+
 #pragma warning(push, 0)
 #include <imgui.h>
 #pragma warning(pop)
@@ -45,13 +47,15 @@ public:
     virtual void Update(float deltaTime) override;
 
 private:
+    int health;
+    bool placed;
     float x;
     float y;
     float spriteWidth;
     float spriteHeight;
 
-    bool placed;
-    ImGuiIO io;
+    float damageInterval = 1.0f;
+    float nextDamageIn = 1.0f;
 };
 
 class PlantSpawnScript : public NativeScript
@@ -80,7 +84,7 @@ private:
 class BulletScript : public NativeScript
 {
 public:
-   // virtual void OnInit() override;
+    // virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
 private:
@@ -99,6 +103,28 @@ private:
     Sprite bulletSprite;
 };
 
+class SunScript : public NativeScript
+{
+public:
+    // virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+private:
+    float sunFallSpeed = 500.0f;
+};
+
+class SunSpawnScript : public NativeScript
+{
+public:
+    virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+private:
+    float spawnInterval = 2.0f, nextSpawnIn = 1.0f;
+    Ref<TextureGPU> sun;
+    Sprite sunSprite;
+};
+
 class ZombieScript : public NativeScript
 {
 public:
@@ -114,8 +140,11 @@ public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
-    void SetCollisionLayer(CollisionLayers collisionLayer) {
-        this->collisionLayer = collisionLayer;
+    void SpawnZombie();
+
+    void SetCollisionLayer(int layerId) {
+        this->layerId = layerId;
+        collisionLayer = CollisionLayers::LAYER_1 << layerId;
     }
 
 private:
@@ -123,10 +152,27 @@ private:
     Ref<TextureGPU> zombie;
     Sprite zombieSprite;
     CollisionLayers collisionLayer;
+    int layerId;
 };
 
 class LawnMowerScript : public NativeScript
 {
 public:
     virtual void Update(float deltaTime) override;
+};
+
+class WaveControllerScript : public NativeScript
+{
+public:
+    virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+    void AddZombies(float initialZombieTime = 3.0f);
+    void AddWave();
+
+private:
+    std::default_random_engine generator;
+    const int ZOMBIES_COUNT = 5;
+    const int WAVE_ZOMBIES_COUNT = 10;
+    const float WAVE_DURATION_SPAN = 5.0f;
 };

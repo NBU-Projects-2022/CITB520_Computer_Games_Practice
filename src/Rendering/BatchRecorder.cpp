@@ -52,6 +52,52 @@ void BatchRecorder::Clear() {
     }
 }
 
+void BatchRecorder::Add(const DrawQuad & drawQuad, glm::vec3 position, float rotation, glm::vec2 scale) {
+    Add(drawQuad, position.x, position.y, position.z, rotation, scale.x, scale.y);
+}
+void BatchRecorder::Add(const DrawQuad & drawQuad, float x, float y, float z, float rot, float scaleX, float scaleY) {
+    auto modelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(x, y, z));
+    modelMatrix = glm::rotate(modelMatrix, rot, glm::vec3(0.0, 0.0, 1.0));
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(scaleX, scaleY, 1.0));
+    Add(drawQuad, modelMatrix);
+}
+void BatchRecorder::Add(const DrawQuad & drawQuad, const glm::mat4 & mat) {
+    std::map<TextureGPU *, DrawBatch2D *>::iterator batch;
+    auto lb = subBatches.find(nullptr);
+    if (lb == subBatches.end()) {
+        auto newBatch = new DrawBatch2D();
+        newBatch->texture = nullptr;
+        batch = subBatches.insert(lb, std::make_pair(nullptr, newBatch));
+    } else {
+        batch = lb;
+    }
+
+    auto & vertices = batch->second->vertices;
+    SpriteVertex vecBottomLeft { { 0, 0, 0 }, { 0.0f, 1.0f }, glm::vec4(1.0) };
+    vecBottomLeft.position = mat * glm::vec4(vecBottomLeft.position, 1.0);
+    vecBottomLeft.color = drawQuad.color;
+    vertices.push_back(vecBottomLeft);
+
+    SpriteVertex vecBottomRight { { drawQuad.size.x, 0, 0 }, { 1.0f, 1.0f }, glm::vec4(1.0) };
+    vecBottomRight.position = mat * glm::vec4(vecBottomRight.position, 1.0);
+    vecBottomRight.color = drawQuad.color;
+    vertices.push_back(vecBottomRight);
+
+    SpriteVertex vecTopLeft { { 0, drawQuad.size.y, 0 }, { 0.0f, 0.0f }, glm::vec4(1.0) };
+    vecTopLeft.position = mat * glm::vec4(vecTopLeft.position, 1.0);
+    vecTopLeft.color = drawQuad.color;
+    vertices.push_back(vecTopLeft);
+
+    // second triangle
+    vertices.push_back(vecTopLeft);
+    vertices.push_back(vecBottomRight);
+
+    SpriteVertex vecTopRight { { drawQuad.size.x, drawQuad.size.y, 0 }, { 1.0f, 0.0f }, glm::vec4(1.0) };
+    vecTopRight.position = mat * glm::vec4(vecTopRight.position, 1.0);
+    vecTopRight.color = drawQuad.color;
+    vertices.push_back(vecTopRight);
+}
+
 void BatchRecorder::Add(const Sprite & sprite, glm::vec3 position, float rotation, glm::vec2 scale) {
     Add(sprite, position.x, position.y, position.z, rotation, scale.x, scale.y);
 }

@@ -22,12 +22,21 @@ struct DrawBatch2D {
     std::vector<SpriteVertex> vertices;
 };
 
+struct DrawQuad {
+    glm::vec2 size;
+    glm::vec4 color;
+};
+
 class BatchRenderer;
 
 class BatchRecorder {
     friend BatchRenderer;
 public:
     ~BatchRecorder();
+
+    void Add(const DrawQuad & drawQuad, glm::vec3 position, float rotation, glm::vec2 scale);
+    void Add(const DrawQuad & drawQuad, float x, float y, float z, float rot = 0.0f, float scaleX = 1, float scaleY = 1);
+    void Add(const DrawQuad & drawQuad, const glm::mat4 & mat);
 
     void Add(const Sprite & sprite, glm::vec3 position, float rotation, glm::vec2 scale);
     void Add(const Sprite & sprite, float x, float y, float z, float rot = 0.0f, float scaleX = 1, float scaleY = 1);

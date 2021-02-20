@@ -160,6 +160,25 @@ public:
                     glm::radians(transform->rotation),
                     transform->scale);
             });
+
+        if (isDebugEnabled) {
+            world->each<TransformComponent, ColliderComponent>(
+                [&](
+                    ECS::Entity* ent,
+                    ECS::ComponentHandle<TransformComponent> transform,
+                    ECS::ComponentHandle<ColliderComponent> collider
+                ) {
+                    if (collider->collider->type == ColliderType::BOX) {
+                        BoxCollider * boxCollider = reinterpret_cast<BoxCollider*>(collider->collider.get());
+                        DrawQuad quad = { boxCollider->_max - boxCollider->_min, glm::vec4(1.0, 0.0, 0.0, 1.0) };
+                        entitySprites.Add(quad,
+                            transform->position - glm::vec3(boxCollider->_min, 0.0f),
+                            glm::radians(transform->rotation), // no idea if this will be fine
+                            transform->scale);
+                    }
+                });
+        }
+
         entitySprites.FinishRecording();
     }
 
@@ -176,14 +195,7 @@ public:
         spriteMaterial.UpdateModelView(glm::mat4(1.0));
 
         spriteMaterial.UpdateIsDebug(false);
-        batchRenderer.Draw(entitySprites);
-
-        if (isDebugEnabled) {
-            spriteMaterial.UpdateIsDebug(true);
-            glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-            batchRenderer.Draw(entitySprites);
-            glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-        }
+        batchRenderer.Draw(entitySprites, spriteMaterial);
 
         spriteMaterial.Unbind();
 

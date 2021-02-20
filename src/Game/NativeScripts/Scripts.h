@@ -32,13 +32,16 @@ public:
     }
 
     bool shouldDestroy;
+    float attackDamage;
+    float hp;
+
+protected:
+    ECS::Entity * entity;
 
 private:
-    ECS::Entity * entity;
     friend class NativeScriptSystem;
 };
 
-enum class PlantTypes { None, Peashooter, Sunflower, Wallnut, Tallnut };
 
 class PlantScript : public NativeScript
 {
@@ -47,15 +50,13 @@ public:
     virtual void Update(float deltaTime) override;
 
 private:
-    int health;
     bool placed;
     float x;
     float y;
     float spriteWidth;
     float spriteHeight;
 
-    float damageInterval = 1.0f;
-    float nextDamageIn = 1.0f;
+    ECS::Entity *spawner;
 
     void PlacePlantLogic();
     void FixCollider(Collider * collider);
@@ -65,29 +66,19 @@ class PlantSpawnScript : public NativeScript
 {
 public:
     static bool shouldSpawn;
+    static bool isHoldingPlant;
     static int plantType;
 
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
     void OnSpawnPress();
-
-private:
-    Ref<TextureGPU> peashooter;
-    Ref<TextureGPU> sunflower;
-    Ref<TextureGPU> wallnut;
-    Ref<TextureGPU> tallnut;
-
-    Sprite peashooterSprite;
-    Sprite sunflowerSprite;
-    Sprite wallnutSprite;
-    Sprite tallnutSprite;
 };
 
 class BulletScript : public NativeScript
 {
 public:
-    // virtual void OnInit() override;
+    virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
 private:
@@ -101,7 +92,7 @@ public:
     virtual void Update(float deltaTime) override;
 
 private:
-    float spawnInterval = .5f, nextSpawnIn = 1.0f;
+    float spawnInterval = 2.f, nextSpawnIn = 1.5f;
     Ref<TextureGPU> bullet;
     Sprite bulletSprite;
 };
@@ -113,7 +104,9 @@ public:
     virtual void Update(float deltaTime) override;
 
 private:
-    float sunFallSpeed = 500.0f;
+    float sunFloatSpeed = 300.f;
+    float sunFloatDistance = 100.f;
+    float sunFloatCurrDistance = 0.f;
 };
 
 class SunSpawnScript : public NativeScript
@@ -122,19 +115,23 @@ public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
-private:
-    float spawnInterval = 2.0f, nextSpawnIn = 1.0f;
-    Ref<TextureGPU> sun;
     Sprite sunSprite;
+private:
+    float spawnInterval = 7.0f, nextSpawnIn = 1.0f;
+    Ref<TextureGPU> sun;
 };
 
 class ZombieScript : public NativeScript
 {
 public:
+    virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
 private:
     float zombieSpeed = 15.0f;
+
+    float attackSpeed = 3.0f;
+    float nextAttackIn = 1.0f;
 };
 
 class ZombieSpawnScript : public NativeScript
@@ -161,7 +158,20 @@ private:
 class LawnMowerScript : public NativeScript
 {
 public:
+    virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
+
+    void SetCollisionLayer(int layerId) {
+        this->layerId = layerId;
+        collisionLayer = CollisionLayers::LAYER_1 << layerId;
+    }
+    
+private:
+    Ref<TextureGPU> lawnMower;
+    Sprite lawnMowerSprite;
+    float speed = 400.f;
+    CollisionLayers collisionLayer;
+    int layerId;
 };
 
 class WaveControllerScript : public NativeScript

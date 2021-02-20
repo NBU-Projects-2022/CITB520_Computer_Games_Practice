@@ -18,6 +18,7 @@ const int LAWN_Y = 30;  // starting y of the lawn
 const int PLOT_W = 80;  // width of a a single plot of land
 const int PLOT_H = 100;  // height of a single plot of land
 
+const float DEBUG_DRAW_GROUND_OFFSET = 0.0625f;
 const float DRAW_LAYER_0 = 0.0f;
 const float DRAW_LAYER_1 = 0.1f;
 const float DRAW_LAYER_2 = 0.2f;

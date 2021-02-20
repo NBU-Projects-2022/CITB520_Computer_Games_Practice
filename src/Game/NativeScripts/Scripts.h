@@ -56,6 +56,9 @@ private:
 
     float damageInterval = 1.0f;
     float nextDamageIn = 1.0f;
+
+    void PlacePlantLogic();
+    void FixCollider(Collider * collider);
 };
 
 class PlantSpawnScript : public NativeScript

@@ -34,18 +34,23 @@ void Game::Init() {
 
 		for (int j = 0; j < COLS; j++) {
 			auto groundEntity = CreateGameObject();
-			Ref<TextureGPU> ground_texture = AssetManager::LoadCachedImageFile("assets/sprites/red_rect.png");
-			Ref<Sprite> ground_sprite = CreateRef<Sprite>(0, 0, ground_texture->GetWidth(), ground_texture->GetHeight(), ground_texture.get());
+			Ref<TextureGPU> groundTexture = AssetManager::LoadCachedImageFile("assets/sprites/red_rect.png");
+			Ref<Sprite> groundSprite = CreateRef<Sprite>(0, 0, groundTexture->GetWidth(), groundTexture->GetHeight(), groundTexture.get());
+			// groundEntity->assign<RenderComponent>(groundSprite);
 
-			groundEntity->assign<TransformComponent>(LAWN_X + j * PLOT_W, LAWN_Y + i * PLOT_H, DRAW_LAYER_9 - 0.1f * i, 0, (float) PLOT_W/ground_texture->GetWidth(), (float) PLOT_H/ground_texture->GetHeight());
-			
+			groundEntity->assign<TransformComponent>(LAWN_X + j * PLOT_W,
+				LAWN_Y + i * PLOT_H,
+				// added small offset to be sure the ground is behind everithing else
+				DRAW_LAYER_9 - 0.1f * i - DEBUG_DRAW_GROUND_OFFSET,
+				0,
+				(float) PLOT_W/groundTexture->GetWidth(),
+				(float) PLOT_H/groundTexture->GetHeight());
+
 			// create ground plots collision model
 			Collider* groundBoxCollider = new BoxCollider(groundEntity, 0, 0, PLOT_W, PLOT_H);
-			groundBoxCollider->collisionLayer = CollisionLayers::LAYER_1 << j | CollisionLayers::GROUND;
+			groundBoxCollider->collisionLayer = CollisionLayers::LAYER_1 << i | CollisionLayers::GROUND;
 			groundEntity->assign<ColliderComponent>(Ref<Collider>(groundBoxCollider));
-
 			groundEntity->assign<RigidBodyComponent>(true);
-			groundEntity->assign<RenderComponent>(ground_sprite);
 		}
 	}
 }

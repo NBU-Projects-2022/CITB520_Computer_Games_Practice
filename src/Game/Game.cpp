@@ -41,7 +41,7 @@ void Game::Init() {
 			
 			// create ground plots collision model
 			Collider* groundBoxCollider = new BoxCollider(groundEntity, 0, 0, PLOT_W, PLOT_H);
-			groundBoxCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::GROUND;
+			groundBoxCollider->collisionLayer = CollisionLayers::LAYER_1 << j | CollisionLayers::GROUND;
 			groundEntity->assign<ColliderComponent>(Ref<Collider>(groundBoxCollider));
 
 			groundEntity->assign<RigidBodyComponent>(true);

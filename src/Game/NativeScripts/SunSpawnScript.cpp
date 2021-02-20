@@ -25,12 +25,14 @@ void SunSpawnScript::Update(float deltaTime)
         auto sunEntity = CreateGameObject();
         sunEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
         sunEntity->assign<RenderComponent>(CreateRef<Sprite>(sunSprite));
-        Collider* sunCircleCollider = new CircleCollider(sunEntity, (float)sun->GetWidth());
-        sunCircleCollider->collisionLayer = CollisionLayers::PLANT;
-        sunCircleCollider->collidesWithLayers = CollisionLayers::GROUND
-            | CollisionLayers::PLANT
-            | CollisionLayers::PROJECTILE;
-        sunEntity->assign<ColliderComponent>(Ref<Collider>(sunCircleCollider));
+        //Collider* sunCircleCollider = new CircleCollider(sunEntity, (float)sun->GetWidth());
+        //sunCircleCollider->collisionLayer = CollisionLayers::LAYER_6 | CollisionLayers::SUN;
+        //sunEntity->assign<ColliderComponent>(Ref<Collider>(sunCircleCollider));
+
+        Collider* sunBoxCollider = new BoxCollider(sunEntity, 0, 0, (float)sun->GetWidth(), (float)sun->GetHeight());
+        sunBoxCollider->collisionLayer = CollisionLayers::LAYER_6 | CollisionLayers::SUN;
+        sunEntity->assign<ColliderComponent>(Ref<Collider>(sunBoxCollider));
+
         sunEntity->assign<NativeScriptComponent>()->Bind<SunScript>();
         auto rigidBody = sunEntity->assign<RigidBodyComponent>();
         rigidBody->isKinematic = true;

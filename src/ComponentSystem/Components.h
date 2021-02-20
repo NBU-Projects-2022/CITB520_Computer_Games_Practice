@@ -80,7 +80,6 @@ struct NativeScriptComponent {
         return reinterpret_cast<T*>(nativeScript.get());
     }
 
-protected:
     Ref<NativeScript> nativeScript;
     friend class NativeScriptSystem;
 };

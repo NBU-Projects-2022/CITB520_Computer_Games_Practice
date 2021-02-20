@@ -16,3 +16,8 @@ void SunScript::Update(float deltaTime)
         shouldDestroy = true;
     }
 }
+
+void SunScript::Collect() {
+    GameState::Instance().money += sunValue;
+    shouldDestroy = true;
+}

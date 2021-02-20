@@ -170,11 +170,11 @@ public:
                 ) {
                     if (collider->collider->type == ColliderType::BOX) {
                         BoxCollider * boxCollider = reinterpret_cast<BoxCollider*>(collider->collider.get());
-                        DrawQuad quad = { boxCollider->_max - boxCollider->_min, glm::vec4(1.0, 0.0, 0.0, 1.0) };
+                        DrawQuad quad = { boxCollider->_max - boxCollider->_min, boxCollider->debugColor };
                         entitySprites.Add(quad,
-                            transform->position - glm::vec3(boxCollider->_min, 0.0f),
+                            transform->position + glm::vec3(boxCollider->_min, 0.0f),
                             glm::radians(transform->rotation), // no idea if this will be fine
-                            transform->scale);
+                            glm::vec2(1.0f));
                     }
                 });
         }

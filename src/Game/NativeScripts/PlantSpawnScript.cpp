@@ -9,6 +9,7 @@
 #include "ComponentSystem/Components.h"
 #include "Core/AssetManager.h"
 #include "Physics/Colliders.h"
+#include "Game/Game.h"
 
 int PlantSpawnScript::plantType = (int)PlantTypes::None;
 bool PlantSpawnScript::shouldSpawn = false;
@@ -33,36 +34,36 @@ void PlantSpawnScript::OnSpawnPress()
 	SDL_GetMouseState(&x, &y);
 
 	auto plantEntity = CreateGameObject();
-	plantEntity->assign<TransformComponent>(x, 720 - y, DRAW_LAYER_10);
-	Collider* plantBoxCollider = nullptr;
 	switch (plantType)
 	{
 		case (int)PlantTypes::Peashooter:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(peashooterSprite));
-			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) peashooter->GetWidth(), (float) peashooter->GetHeight());
-			//add shooter component
+			// TODO: add shooter component
 			break;
 		case (int)PlantTypes::Sunflower:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(sunflowerSprite));
-			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) sunflower->GetWidth(), (float) sunflower->GetHeight());
 			break;
 		case (int)PlantTypes::Wallnut:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(wallnutSprite));
-			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) wallnut->GetWidth(), (float) wallnut->GetHeight());
 			break;
 		case (int)PlantTypes::Tallnut:
 			plantEntity->assign<RenderComponent>(CreateRef<Sprite>(tallnutSprite));
-			plantBoxCollider = new BoxCollider(plantEntity, 0, 0, (float) tallnut->GetWidth(), (float) tallnut->GetHeight());
 			break;
 		default:
+			// TODO handle this, we should not reach here
 			break;
 	}
 
+	plantEntity->assign<TransformComponent>(x, 720 - y, DRAW_LAYER_10);
+
+	float xOffset = PLOT_W / 2;
+	float yOffset = PLOT_H / 2;
+	Collider* plantBoxCollider = new BoxCollider(plantEntity, xOffset, yOffset, xOffset + 1, yOffset + 1);
+	plantBoxCollider->debugColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	plantBoxCollider->collisionLayer = CollisionLayers::LAYER_MASK | CollisionLayers::PLANT;
-	plantBoxCollider->collidesWithLayers = CollisionLayers::LAYER_MASK 
-		| CollisionLayers::GROUND
-		| CollisionLayers::ZOMBIE
-		| CollisionLayers::PROJECTILE;
+	plantBoxCollider->collidesWithLayers = CollisionLayers::LAYER_MASK
+										 | CollisionLayers::GROUND
+										 | CollisionLayers::PLANT;
 	plantEntity->assign<ColliderComponent>(Ref<Collider>(plantBoxCollider));
 	plantEntity->assign<NativeScriptComponent>()->Bind<PlantScript>();
 	auto rigidBody = plantEntity->assign<RigidBodyComponent>();

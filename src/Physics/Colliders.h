@@ -43,6 +43,7 @@ public:
     CollisionLayers collidesWithLayers;
     ColliderType type;
     std::vector<Collision> collisions;
+    glm::vec4 debugColor;
 
     // lazy but should work
     virtual bool CheckForCollisionWith(Collider * collider) = 0;
@@ -54,7 +55,8 @@ protected:
         : entity(entity),
         type(type),
         collisionLayer(CollisionLayers::GROUND),
-        collidesWithLayers(CollisionLayers::GROUND)
+        collidesWithLayers(CollisionLayers::GROUND),
+        debugColor(1.0f)
     {}
 };
 

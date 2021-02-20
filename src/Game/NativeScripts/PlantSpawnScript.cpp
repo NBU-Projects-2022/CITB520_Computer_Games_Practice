@@ -11,6 +11,8 @@
 #include "Physics/Colliders.h"
 #include "Game/Game.h"
 
+#include <iostream>
+
 int PlantSpawnScript::plantType = (int)PlantTypes::None;
 bool PlantSpawnScript::shouldSpawn = false;
 

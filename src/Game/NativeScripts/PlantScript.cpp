@@ -30,6 +30,7 @@ void PlantScript::Update(float deltaTime)
         if (io.MousePos.x < 0 || io.MousePos.x > SCREEN_WIDTH ||
             io.MousePos.y < 0 || io.MousePos.y > SCREEN_HEIGHT)
         {
+            PlantSpawnScript::isHoldingPlant = false;
             shouldDestroy = true;
         }
         else if (io.MouseClicked[0])

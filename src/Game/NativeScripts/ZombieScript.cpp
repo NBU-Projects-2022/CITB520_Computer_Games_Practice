@@ -10,8 +10,23 @@
 
 void ZombieScript::Update(float deltaTime) {
     auto & rigidBody = GetComponent<RigidBodyComponent>();
-    rigidBody.velocity.x = -zombieSpeed;
 
+    bool collidesWithPlant = false;
+    for (auto& collision : GetComponent<ColliderComponent>().collider->collisions)
+    {
+        //check if this works
+        if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::PLANT) > 0)
+        {
+            collidesWithPlant = true;
+            rigidBody.velocity.x = 0;
+        }
+    }
+
+    if (!collidesWithPlant)
+    {
+        rigidBody.velocity.x = -zombieSpeed;
+
+    }
     // ImGuiIO& io = ImGui::GetIO();
     // if (rigidBody.isKinematic) {
     //     rigidBody.isKinematic = false;

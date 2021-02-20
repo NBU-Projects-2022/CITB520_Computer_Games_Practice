@@ -15,4 +15,14 @@ void BulletScript::Update(float deltaTime)
     {
         shouldDestroy = true;
     }
+
+    for (auto& collision : GetComponent<ColliderComponent>().collider->collisions)
+    {
+        //check if this works
+        if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0) 
+        {
+            shouldDestroy = true;
+        }
+    }
+
 }

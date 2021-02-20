@@ -9,6 +9,8 @@ ECS_TYPE_IMPLEMENTATION;
 #include "Rendering/Sprite.h"
 #include "Rendering/OpenGLWrapper/TextureGPU.h"
 
+#include "PlantTypes.h"
+
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 800;
 const int ROWS = 5;  // how many rows the lawn has
@@ -37,6 +39,11 @@ struct SpawnCommand {
     float gameTime = 0.0f;
 };
 
+struct PlantSeed {
+    int type;
+    Ref<TextureGPU> texture;
+};
+
 class GameState {
 public:
     static GameState& Instance() {
@@ -54,6 +61,26 @@ public:
     float waveInterval = 30.0f;
     int waveCount = 4;
     std::queue<SpawnCommand> spawnCommands;
+    std::vector<PlantSeed> plantSeeds;
+
+    VecPlants plantStates; 
+
+    /*void AddPlantSeed(PlantTypes type, Ref<TextureGPU> tex)
+    {
+        plantSeeds.push_back({type, tex});
+    }
+
+    PlantSeed& GetPlantSeed(PlantTypes type)
+    {
+        for (auto& seed : plantSeeds)
+        {
+            if (seed.type == type)
+            {
+                return seed;
+            }
+        }
+    }*/
+
 private:
     GameState() = default;
 };

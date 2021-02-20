@@ -38,7 +38,6 @@ private:
     friend class NativeScriptSystem;
 };
 
-enum class PlantTypes { None, Peashooter, Sunflower, Wallnut, Tallnut };
 
 class PlantScript : public NativeScript
 {

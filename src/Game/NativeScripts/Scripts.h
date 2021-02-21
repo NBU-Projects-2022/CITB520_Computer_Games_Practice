@@ -27,8 +27,17 @@ public:
         return entity->get<T>().get();
     }
 
+    template<typename T, typename... Args>
+    T& AddComponent(Args &&... args) {
+        return entity->assign<T>(std::forward<Args>(args)...).get();
+    }
+
     ECS::Entity * CreateGameObject() {
         return entity->getWorld()->create();
+    }
+
+    ECS::Entity * GetEntity() {
+        return entity;
     }
 
     bool shouldDestroy;
@@ -165,7 +174,7 @@ public:
         this->layerId = layerId;
         collisionLayer = CollisionLayers::LAYER_1 << layerId;
     }
-    
+
 private:
     Ref<TextureGPU> lawnMower;
     Sprite lawnMowerSprite;
@@ -188,4 +197,14 @@ private:
     const int ZOMBIES_COUNT = 5;
     const int WAVE_ZOMBIES_COUNT = 10;
     const float WAVE_DURATION_SPAN = 5.0f;
+};
+
+class ShovelControllerScript : public NativeScript
+{
+public:
+    virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+private:
+    bool usedShovel = false;
 };

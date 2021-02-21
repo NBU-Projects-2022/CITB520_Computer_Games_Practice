@@ -24,6 +24,10 @@ void Game::Init() {
     auto waveController = CreateGameObject();
     waveController->assign<NativeScriptComponent>()->Bind<WaveControllerScript>();
 
+	// Create a shovel controller
+    auto shovelController = CreateGameObject();
+    shovelController->assign<NativeScriptComponent>()->Bind<ShovelControllerScript>();
+
 	const int BOTTOM_ROW_Y = 30, ROW_SIZE = 100;
 	for (int i = 0; i < ROWS; i++) {
 		// Create a zombie spawner for each row
@@ -31,7 +35,7 @@ void Game::Init() {
 		zombieSpawn->assign<TransformComponent>(LAWN_X + COLS * PLOT_W, BOTTOM_ROW_Y + ROW_SIZE * i, DRAW_LAYER_9 - 0.1f * i);
 		auto script = zombieSpawn->assign<NativeScriptComponent>()->Bind<ZombieSpawnScript>();
 		script->SetCollisionLayer(i);
-		
+
 		// Create a lawn mower for each row
 		auto lawnMowerEntity = CreateGameObject();
 		lawnMowerEntity->assign<TransformComponent>(LAWN_X, BOTTOM_ROW_Y + ROW_SIZE * i, DRAW_LAYER_9 - 0.1f * i);

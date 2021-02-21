@@ -27,6 +27,7 @@ private:
     Ref<TextureGPU> sunflowerSeed;
     Ref<TextureGPU> wallnutSeed;
     Ref<TextureGPU> tallnutSeed;
+    Ref<TextureGPU> shovel;
 
     void DrawInGameUI(Game & gameState);
     void DrawPauseMenu();

@@ -63,7 +63,9 @@ public:
     std::queue<SpawnCommand> spawnCommands;
     std::vector<PlantSeed> plantSeeds;
 
-    VecPlants plantStates; 
+    VecPlants plantStates;
+
+    bool usingShovel = false;
 
     /*void AddPlantSeed(PlantTypes type, Ref<TextureGPU> tex)
     {

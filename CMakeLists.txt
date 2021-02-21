@@ -43,7 +43,9 @@ add_executable(${PROJECT_NAME}
 	"src/Game/NativeScripts/BulletScript.cpp"
     "src/Game/NativeScripts/SunScript.cpp"
     "src/Game/NativeScripts/SunSpawnScript.cpp"
-    "src/Game/NativeScripts/WaveControllerScript.cpp")
+    "src/Game/NativeScripts/WaveControllerScript.cpp"
+    "src/Game/NativeScripts/ShovelControllerScript.cpp"
+)
 
 # OpenGL
 find_package(OpenGL REQUIRED)

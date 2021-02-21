@@ -18,6 +18,7 @@ ImGuiMenu::ImGuiMenu(EngineBase * engineBase)
     sunflowerSeed = AssetManager::LoadCachedImageFile("assets/sprites/SunflowerSeed.png");
     wallnutSeed = AssetManager::LoadCachedImageFile("assets/sprites/WallnutSeed.png");
     tallnutSeed = AssetManager::LoadCachedImageFile("assets/sprites/TallnutSeed.png");
+    shovel = AssetManager::LoadCachedImageFile("assets/sprites/Shovel.png");
 
     GameState::Instance().plantSeeds.push_back({ (int)PlantTypes::Peashooter, peashooterSeed });
     GameState::Instance().plantSeeds.push_back({ (int)PlantTypes::Sunflower, sunflowerSeed });
@@ -127,6 +128,31 @@ void ImGuiMenu::DrawImGui(SDL_Window* window, Game & gameState) {
     }
 }
 
+class ActiveButtonFeedback {
+public:
+    ActiveButtonFeedback(bool isActive)
+        : isActive(isActive)
+    {
+        if (isActive) {
+            // ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+            // ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+            // ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+        }
+    }
+
+    ~ActiveButtonFeedback() {
+        if (isActive) {
+            ImGui::PopStyleColor(3);
+        }
+    }
+
+private:
+    bool isActive;
+};
+
 void ImGuiMenu::DrawInGameUI(Game & gameState) {
     ImGuiIO& io = ImGui::GetIO();
 
@@ -182,14 +208,15 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
             showDebugInfo = false;
         }
 
+        auto & gameStateInstance = GameState::Instance();
         ImGui::SameLine();
         ImGui::Text("money %d, waves left %d, next wave %.2f, wave interval %.2f",
-            GameState::Instance().money,
-            GameState::Instance().waveCount,
-            GameState::Instance().waveTimer,
-            GameState::Instance().waveInterval);
+            gameStateInstance.money,
+            gameStateInstance.waveCount,
+            gameStateInstance.waveTimer,
+            gameStateInstance.waveInterval);
 
-        for (auto& seed : GameState::Instance().plantSeeds)
+        for (auto& seed : gameStateInstance.plantSeeds)
         {
             if (ImGui::ImageButton(reinterpret_cast<void*>(seed.texture->GetId()), ImVec2{ (float)seed.texture->GetWidth(), (float)seed.texture->GetHeight() }))
             {
@@ -201,6 +228,14 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
             }
 
             ImGui::SameLine();
+        }
+
+        {
+            ActiveButtonFeedback feedback(gameStateInstance.usingShovel);
+            if (ImGui::ImageButton(reinterpret_cast<void*>(shovel->GetId()), ImVec2{ (float)shovel->GetWidth(), (float)shovel->GetHeight() }))
+            {
+                gameStateInstance.usingShovel = !gameStateInstance.usingShovel;
+            }
         }
 
         ImGui::End();

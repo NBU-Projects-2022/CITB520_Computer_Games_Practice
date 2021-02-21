@@ -9,6 +9,15 @@
 //ECS::World* Game::world;
 
 void Game::Init() {
+	// Attach Sun Collector to mouse cursor
+	auto sunCollector = CreateGameObject();
+	sunCollector->assign<TransformComponent>(0, 0, DRAW_LAYER_10);
+	Collider* sunCollectorBoxCollider = new BoxCollider(sunCollector, -10, -10, 10, 10);
+	sunCollectorBoxCollider->collisionLayer = CollisionLayers::LAYER_6;
+	sunCollectorBoxCollider->collidesWithLayers = CollisionLayers::LAYER_6 | CollisionLayers::SUN;
+	sunCollector->assign<ColliderComponent>(Ref<Collider>(sunCollectorBoxCollider));
+	sunCollector->assign<NativeScriptComponent>()->Bind<SunCollector>();
+
 	// Set background
 	auto backgroundEntity = CreateGameObject();
 	backgroundEntity->assign<TransformComponent>(0.0f, 0.0f, DRAW_LAYER_0);

@@ -111,8 +111,11 @@ class SunScript : public NativeScript
 public:
     // virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
+    void Collect();
 
 private:
+    int sunValue = 25;
+    float sunFallSpeed = 100.0f;
     float sunFloatSpeed = 300.f;
     float sunFloatDistance = 100.f;
     float sunFloatCurrDistance = 0.f;
@@ -197,6 +200,12 @@ private:
     const int ZOMBIES_COUNT = 5;
     const int WAVE_ZOMBIES_COUNT = 10;
     const float WAVE_DURATION_SPAN = 5.0f;
+};
+
+class SunCollector : public NativeScript
+{
+public:
+    virtual void Update(float deltaTime) override;
 };
 
 class ShovelControllerScript : public NativeScript

@@ -17,3 +17,8 @@ void SunScript::Update(float deltaTime)
 
     auto& position = GetComponent<TransformComponent>().position;
 }
+
+void SunScript::Collect() {
+    GameState::Instance().money += sunValue;
+    shouldDestroy = true;
+}

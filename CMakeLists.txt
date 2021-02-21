@@ -44,6 +44,7 @@ add_executable(${PROJECT_NAME}
     "src/Game/NativeScripts/SunScript.cpp"
     "src/Game/NativeScripts/SunSpawnScript.cpp"
     "src/Game/NativeScripts/WaveControllerScript.cpp"
+    "src/Game/NativeScripts/SunCollector.cpp"
     "src/Game/NativeScripts/ShovelControllerScript.cpp"
 )
 

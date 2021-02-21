@@ -1,7 +1,5 @@
 #pragma once
 
-#include <random>
-
 #pragma warning(push, 0)
 #include <imgui.h>
 #pragma warning(pop)
@@ -10,6 +8,7 @@
 ECS_TYPE_IMPLEMENTATION;
 
 #include "Core/Common.h"
+#include "Core/Random.h"
 #include "Rendering/Sprite.h"
 #include "../Game.h"
 #include "Physics/Colliders.h"
@@ -19,6 +18,8 @@ class NativeScript {
 public:
 
     virtual void OnInit() {}
+    virtual void OnDestroy() {}
+
     virtual void Update(float deltaTime) = 0;
 
     template<typename T>
@@ -44,10 +45,8 @@ public:
     float attackDamage;
     float hp;
 
-protected:
-    ECS::Entity * entity;
-
 private:
+    ECS::Entity * entity;
     friend class NativeScriptSystem;
 };
 
@@ -56,6 +55,7 @@ class PlantScript : public NativeScript
 {
 public:
     virtual void OnInit() override;
+    virtual void OnDestroy() override;
     virtual void Update(float deltaTime) override;
 
 private:
@@ -127,10 +127,10 @@ public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
-    Sprite sunSprite;
 private:
     float spawnInterval = 7.0f, nextSpawnIn = 1.0f;
     Ref<TextureGPU> sun;
+    Sprite sunSprite;
 };
 
 class ZombieScript : public NativeScript
@@ -178,10 +178,15 @@ public:
         collisionLayer = CollisionLayers::LAYER_1 << layerId;
     }
 
+    void Activate() {
+        active = true;
+    }
+
 private:
     Ref<TextureGPU> lawnMower;
     Sprite lawnMowerSprite;
     float speed = 400.f;
+    bool active = false;
     CollisionLayers collisionLayer;
     int layerId;
 };
@@ -196,7 +201,7 @@ public:
     void AddWave();
 
 private:
-    std::default_random_engine generator;
+    Random rnd;
     const int ZOMBIES_COUNT = 5;
     const int WAVE_ZOMBIES_COUNT = 10;
     const float WAVE_DURATION_SPAN = 5.0f;
@@ -205,6 +210,7 @@ private:
 class SunCollector : public NativeScript
 {
 public:
+    virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 };
 

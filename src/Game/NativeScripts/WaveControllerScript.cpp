@@ -32,36 +32,30 @@ void WaveControllerScript::Update(float deltaTime) {
 
 void WaveControllerScript::AddZombies(float initialZombieTime) {
     auto & instance = GameState::Instance();
-    std::uniform_int_distribution<int> layerDistribution(0, ROWS - 1);
-    std::uniform_int_distribution<int> zombieDistribution(0, 1);
-    std::uniform_real_distribution<> timeDistribution(initialZombieTime, instance.waveInterval);
     std::vector<float> spawnTimes;
     for (int i = 0; i < ZOMBIES_COUNT; ++i) {
-        spawnTimes.push_back(timeDistribution(generator));
+        spawnTimes.push_back(rnd.Float(initialZombieTime, instance.waveInterval));
     }
 
     std::sort(spawnTimes.begin(), spawnTimes.end(), std::less<>());
     for (int i = 0; i < ZOMBIES_COUNT; ++i) {
-        int zombieType = zombieDistribution(generator);
-        int layerId = layerDistribution(generator);
+        int zombieType = rnd.Int(0, 1);
+        int layerId = rnd.Int(0, ROWS - 1);
         instance.spawnCommands.push({ zombieType, layerId, instance.totalGameTime + spawnTimes[i] });
     }
 }
 
 void WaveControllerScript::AddWave() {
     auto & instance = GameState::Instance();
-    std::uniform_int_distribution<int> layerDistribution(0, ROWS - 1);
-    std::uniform_int_distribution<int> zombieDistribution(0, 1);
-    std::uniform_real_distribution<> timeDistribution(1.0f, WAVE_DURATION_SPAN);
     std::vector<float> spawnTimes;
     for (int i = 0; i < WAVE_ZOMBIES_COUNT; ++i) {
-        spawnTimes.push_back(timeDistribution(generator));
+        spawnTimes.push_back(rnd.Float(1.0f, WAVE_DURATION_SPAN));
     }
 
     std::sort(spawnTimes.begin(), spawnTimes.end(), std::less<>());
     for (int i = 0; i < WAVE_ZOMBIES_COUNT; ++i) {
-        int zombieType = zombieDistribution(generator);
-        int layerId = layerDistribution(generator);
+        int zombieType = rnd.Int(0, 1);
+        int layerId = rnd.Int(0, ROWS - 1);
         instance.spawnCommands.push({ zombieType, layerId, instance.totalGameTime + spawnTimes[i] });
     }
 }

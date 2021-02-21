@@ -15,15 +15,17 @@ void ZombieScript::OnInit()
 }
 
 void ZombieScript::Update(float deltaTime) {
-    
+
     if (hp <= 0)
     {
         shouldDestroy = true;
+        return;
     }
-    
+
     auto & rigidBody = GetComponent<RigidBodyComponent>();
 
     bool collidesWithPlant = false;
+    nextAttackIn -= deltaTime;
     for (auto& collision : GetComponent<ColliderComponent>().collider->collisions)
     {
         //check if this works
@@ -32,22 +34,13 @@ void ZombieScript::Update(float deltaTime) {
             collidesWithPlant = true;
             rigidBody.velocity.x = 0;
 
-            nextAttackIn -= deltaTime;
             if (nextAttackIn <= 0)
             {
-                collision.otherEntity->get<NativeScriptComponent>()->nativeScript->hp -= attackDamage;
+                collision.otherEntity->get<NativeScriptComponent>()->Script<NativeScript>()->hp -= attackDamage;
                 nextAttackIn = attackSpeed;
             }
-        } 
-        
-        if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::BULLET) > 0)
-        {
-            hp -= collision.otherEntity->get<NativeScriptComponent>()->nativeScript->attackDamage;
-        }
 
-         if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::LAWNMOWER) > 0)
-        {
-            shouldDestroy = true;
+            break;
         }
     }
 

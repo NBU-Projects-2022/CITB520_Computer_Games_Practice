@@ -19,6 +19,12 @@ void PlantScript::OnInit()
     spriteHeight = GetComponent<RenderComponent>().sprite->height;
 }
 
+void PlantScript::OnDestroy() {
+    if (spawner && spawner->has<NativeScriptComponent>()) {
+        spawner->get<NativeScriptComponent>()->Script<NativeScript>()->shouldDestroy = true;
+    }
+}
+
 void PlantScript::Update(float deltaTime)
 {
     if (!placed)
@@ -43,22 +49,9 @@ void PlantScript::Update(float deltaTime)
             GetComponent<TransformComponent>().position.x = x;
             GetComponent<TransformComponent>().position.y = y;
         }
+    } else if (hp <= 0) {
+        shouldDestroy = true;
     }
-    else
-    {
-        if (hp == 0) {
-
-            if (spawner != NULL && spawner->has<NativeScriptComponent>())
-            {
-                spawner->get<NativeScriptComponent>()->nativeScript->shouldDestroy = true;
-            }
-            
-            shouldDestroy = true;
-        }
-        
-
-    }
-
 }
 
 void PlantScript::PlacePlantLogic() {

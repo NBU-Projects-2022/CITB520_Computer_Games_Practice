@@ -34,6 +34,7 @@ void ZombieSpawnScript::SpawnZombie() {
     zombieBoxCollider->collidesWithLayers = collisionLayer
         | CollisionLayers::GROUND
         | CollisionLayers::PLANT
+        | CollisionLayers::LAWNMOWER
         | CollisionLayers::BULLET;
     zombieEntity->assign<ColliderComponent>(Ref<Collider>(zombieBoxCollider));
     zombieEntity->assign<NativeScriptComponent>()->Bind<ZombieScript>();

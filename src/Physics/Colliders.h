@@ -12,12 +12,16 @@ enum class ColliderType {
 };
 
 enum class CollisionLayers : int {
+    NONE = 0,
+
+    LOGIC_LAYERS_MASK = (1 << 15) - 1,
     GROUND = (1 << 0),
     ZOMBIE = (1 << 1),
     PLANT = (1 << 2),
     BULLET = (1 << 3),
     SUN = (1 << 4),
     LAWNMOWER = (1 << 5),
+    MOUSE = (1 << 14),
 
     LAYER_MASK = (31 << 15),
     LAYER_1 = (1 << 15),
@@ -55,8 +59,8 @@ protected:
     Collider(ECS::Entity * entity, ColliderType type)
         : entity(entity),
         type(type),
-        collisionLayer(CollisionLayers::GROUND),
-        collidesWithLayers(CollisionLayers::GROUND),
+        collisionLayer(CollisionLayers::NONE),
+        collidesWithLayers(CollisionLayers::NONE),
         debugColor(1.0f)
     {}
 };

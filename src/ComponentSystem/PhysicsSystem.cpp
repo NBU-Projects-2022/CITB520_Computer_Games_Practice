@@ -19,12 +19,12 @@ void PhysicsSystem::tick(ECS::World* world, float deltaTime) {
         for (int j = i + 1; j < objects.size(); ++j) {
             auto & otherEntity = objects[j];
             const auto & otherCollider = otherEntity->get<ColliderComponent>();
+            bool entityCanCollide = bool(entityCollider->collider->collidesWithLayers & otherCollider->collider->collisionLayer & CollisionLayers::LOGIC_LAYERS_MASK)
+                && bool(entityCollider->collider->collidesWithLayers & otherCollider->collider->collisionLayer & CollisionLayers::LAYER_MASK);
+            bool otherEntityCanCollide = bool(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer & CollisionLayers::LOGIC_LAYERS_MASK)
+                && bool(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer & CollisionLayers::LAYER_MASK);
 
-            if (0 == int(otherCollider->collider->collisionLayer & entityCollider->collider->collisionLayer & CollisionLayers::LAYER_MASK)
-                // if on the same layer
-                || (0 == int(entityCollider->collider->collidesWithLayers & otherCollider->collider->collisionLayer)
-                    && 0 == int(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer))
-            ) {
+            if (!entityCanCollide && !otherEntityCanCollide) {
                 continue;
             }
 
@@ -32,11 +32,11 @@ void PhysicsSystem::tick(ECS::World* world, float deltaTime) {
                 continue;
             }
 
-            if (bool(entityCollider->collider->collidesWithLayers & otherCollider->collider->collisionLayer)) {
+            if (entityCanCollide) {
                 entityCollider->collider->collisions.push_back(Collider::Collision { otherEntity });
             }
 
-            if (bool(otherCollider->collider->collidesWithLayers & entityCollider->collider->collisionLayer)) {
+            if (otherEntityCanCollide) {
                 otherCollider->collider->collisions.push_back(Collider::Collision { entity });
             }
         }

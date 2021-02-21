@@ -17,8 +17,6 @@ void PlantScript::OnInit()
     placed = false;
     spriteWidth = GetComponent<RenderComponent>().sprite->width;
     spriteHeight = GetComponent<RenderComponent>().sprite->height;
-
-    health = 3;
 }
 
 void PlantScript::Update(float deltaTime)
@@ -26,13 +24,15 @@ void PlantScript::Update(float deltaTime)
     if (!placed)
     {
         ImGuiIO& io = ImGui::GetIO();
+        auto& currentPlant = GameState::Instance().plantStates.GetPlantByType(PlantSpawnScript::plantType);
 
         if (io.MousePos.x < 0 || io.MousePos.x > SCREEN_WIDTH ||
             io.MousePos.y < 0 || io.MousePos.y > SCREEN_HEIGHT)
         {
+            PlantSpawnScript::isHoldingPlant = false;
             shouldDestroy = true;
         }
-        else if (io.MouseClicked[0])
+        else if (io.MouseClicked[0] && GameState::Instance().money > currentPlant.cost)
         {
             PlacePlantLogic();
         }
@@ -46,31 +46,18 @@ void PlantScript::Update(float deltaTime)
     }
     else
     {
-        bool collidesWithZombie = false;
-        for (auto& collision : GetComponent<ColliderComponent>().collider->collisions)
-        {
-            //check if this works
-            if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0) {
-                collidesWithZombie = true;
-                nextDamageIn -= deltaTime;
+        if (hp == 0) {
 
-                if (nextDamageIn <= .0f) {
-                    nextDamageIn = damageInterval;
-                    health--;
-
-                    if (health == 0) {
-                        shouldDestroy = true;
-                    }
-                }
+            if (spawner != NULL && spawner->has<NativeScriptComponent>())
+            {
+                spawner->get<NativeScriptComponent>()->nativeScript->shouldDestroy = true;
             }
+            
+            shouldDestroy = true;
         }
-
-        if (!collidesWithZombie) {
-            nextDamageIn = damageInterval;
-        }
+        
 
     }
-
 
 }
 
@@ -98,6 +85,8 @@ void PlantScript::PlacePlantLogic() {
 
     if (isOverALandPlot && isNotOverAPlant)
     {
+        PlantSpawnScript::isHoldingPlant = false;
+
         // setup actual collision box size
         auto* collider = reinterpret_cast<BoxCollider*>(GetComponent<ColliderComponent>().collider.get());
         collider->_min[0] = 0;
@@ -105,7 +94,7 @@ void PlantScript::PlacePlantLogic() {
         collider->_max[0] = PLOT_W;
         collider->_max[1] = PLOT_H;
         collider->debugColor = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-        collider->collisionLayer = (collider->collisionLayer ^ CollisionLayers::LAYER_MASK) | (plotCollider->collisionLayer & CollisionLayers::LAYER_MASK);
+        collider->collisionLayer = (collider->collisionLayer ^ CollisionLayers::LAYER_MASK) | (plotCollider->collisionLayer & CollisionLayers::LAYER_MASK) | CollisionLayers::PLANT;
         collider->collidesWithLayers |= CollisionLayers::ZOMBIE;
 
         // snap to land plot
@@ -116,20 +105,22 @@ void PlantScript::PlacePlantLogic() {
         placed = true;
         auto& position = GetComponent<TransformComponent>().position;
 
-        switch (PlantSpawnScript::plantType)
+        auto& currentPlant = GameState::Instance().plantStates.GetPlantByType(PlantSpawnScript::plantType);
+        GameState::Instance().money -= currentPlant.cost;
+        hp = currentPlant.hp;
+
+        if (currentPlant.isShooter)
         {
-            case (int)PlantTypes::Peashooter: {
-                auto bulletSpawn = CreateGameObject();
-                bulletSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
-                bulletSpawn->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
-                break;
-            }
-            case (int)PlantTypes::Sunflower: {
-                auto sunSpawn = CreateGameObject();
-                sunSpawn->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
-                sunSpawn->assign<NativeScriptComponent>()->Bind<SunSpawnScript>();
-                break;
-            }
+            spawner = CreateGameObject();
+            spawner->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
+            spawner->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
+        }
+
+        if (currentPlant.isSpawningSuns)
+        {
+            spawner = CreateGameObject();
+            spawner->assign<TransformComponent>(position.x, position.y + spriteHeight / 2, DRAW_LAYER_10);
+            spawner->assign<NativeScriptComponent>()->Bind<SunSpawnScript>();
         }
     }
 }

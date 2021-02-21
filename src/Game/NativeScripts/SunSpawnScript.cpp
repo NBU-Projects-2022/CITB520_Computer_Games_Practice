@@ -20,10 +20,14 @@ void SunSpawnScript::OnInit()
 void SunSpawnScript::Update(float deltaTime)
 {
     nextSpawnIn -= deltaTime;
-    if (nextSpawnIn < 0) {
+    if (nextSpawnIn < 0)
+    {
+        GameState::Instance().money += 24;
+
         auto& position = GetComponent<TransformComponent>().position;
         auto sunEntity = CreateGameObject();
-        sunEntity->assign<TransformComponent>(position); // assign() takes arguments and passes them to the constructor
+
+        sunEntity->assign<TransformComponent>(position);
         sunEntity->assign<RenderComponent>(CreateRef<Sprite>(sunSprite));
         //Collider* sunCircleCollider = new CircleCollider(sunEntity, (float)sun->GetWidth());
         //sunCircleCollider->collisionLayer = CollisionLayers::LAYER_6 | CollisionLayers::SUN;
@@ -34,6 +38,7 @@ void SunSpawnScript::Update(float deltaTime)
         sunEntity->assign<ColliderComponent>(Ref<Collider>(sunBoxCollider));
 
         sunEntity->assign<NativeScriptComponent>()->Bind<SunScript>();
+
         auto rigidBody = sunEntity->assign<RigidBodyComponent>();
         rigidBody->isKinematic = true;
 

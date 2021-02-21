@@ -80,6 +80,11 @@ struct NativeScriptComponent {
         return reinterpret_cast<T*>(nativeScript.get());
     }
 
+    template<typename T>
+    T* Script() {
+        return reinterpret_cast<T*>(nativeScript.get());
+    }
+
     Ref<NativeScript> nativeScript;
     friend class NativeScriptSystem;
 };

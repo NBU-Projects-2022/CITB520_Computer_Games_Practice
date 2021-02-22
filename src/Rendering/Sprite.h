@@ -14,6 +14,7 @@ public:
         width(other.width),
         height(other.height),
         texture(other.texture),
+        drawOffset(other.drawOffset),
         uvMin(other.uvMin),
         uvMax(other.uvMax),
         color(other.color)
@@ -23,12 +24,13 @@ public:
         // color = generateColor(++colorIndex);
     }
 
-    Sprite(int16_t x, int16_t y, int16_t width, int16_t height, TextureGPU * texture)
+    Sprite(int16_t x, int16_t y, int16_t width, int16_t height, TextureGPU * texture, glm::vec2 drawOffset = glm::vec2(0.0f))
         : x(x),
         y(y),
         width(width),
         height(height),
         texture(texture),
+        drawOffset(drawOffset),
         uvMin(x / (float)texture->GetWidth(), y / (float)texture->GetHeight()),
         uvMax((x + width) / (float)texture->GetWidth(), (y + height) / (float)texture->GetHeight()),
         color(1.0f)
@@ -45,6 +47,7 @@ public:
     TextureGPU * texture;
     glm::vec4 color;
 
+    glm::vec2 drawOffset;
     glm::vec2 uvMin, uvMax;
 
 private:

@@ -11,7 +11,7 @@ bool CheckForBoxWithBoxCollision(BoxCollider * b1, BoxCollider * b2) {
     float min1y = b1Pos.y + b1->_min.y;
     float max1x = b1Pos.x + b1->_max.x;
     float max1y = b1Pos.y + b1->_max.y;
-                                
+
     float min2x = b2Pos.x + b2->_min.x;
     float min2y = b2Pos.y + b2->_min.y;
     float max2x = b2Pos.x + b2->_max.x;
@@ -22,7 +22,7 @@ bool CheckForBoxWithBoxCollision(BoxCollider * b1, BoxCollider * b2) {
 }
 
 bool ArePointsInRange(glm::vec2 p1, glm::vec2 p2, float range) {
-    return glm::length2(p1 * p2) < range * range;
+    return glm::distance2(p1, p2) < range * range;
 }
 
 bool CheckForBoxWithCircleCollision(BoxCollider * box, CircleCollider * circle) {
@@ -42,7 +42,7 @@ bool CheckForBoxWithCircleCollision(BoxCollider * box, CircleCollider * circle) 
         // circle center is in corner
         // check if the corners are inside the circle
         glm::vec2 circlePos(circlePosition.x, circlePosition.y);
-        glm::vec2 boxPos(circlePosition.x, circlePosition.y);
+        glm::vec2 boxPos(boxPosition.x, boxPosition.y);
         return ArePointsInRange(circlePos, boxPos + box->_min, circle->radius)
             || ArePointsInRange(circlePos, boxPos + glm::vec2(box->_min.x, box->_max.y), circle->radius)
             || ArePointsInRange(circlePos, boxPos + glm::vec2(box->_max.x, box->_min.y), circle->radius)

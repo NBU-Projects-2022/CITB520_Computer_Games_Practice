@@ -6,16 +6,14 @@
 void SunScript::Update(float deltaTime)
 {
     auto& rigidBody = GetComponent<RigidBodyComponent>();
-    rigidBody.velocity.y = sunFloatSpeed;
-
-    sunFloatCurrDistance += sunFloatSpeed * deltaTime;
-
-    if (sunFloatCurrDistance >= sunFloatDistance)
-    {
-        shouldDestroy = true;
+    if (!rigidBody.isKinematic) {
+        return;
     }
 
-    auto& position = GetComponent<TransformComponent>().position;
+    flyTime -= deltaTime;
+    if (flyTime <= 0.0f) {
+        rigidBody.isKinematic = false;
+    }
 }
 
 void SunScript::Collect() {

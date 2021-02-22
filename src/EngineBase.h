@@ -175,6 +175,13 @@ public:
                             transform->position + glm::vec3(boxCollider->_min, 0.0f),
                             glm::radians(transform->rotation), // no idea if this will be fine
                             glm::vec2(1.0f));
+                    } else if (collider->collider->type == ColliderType::CIRCLE) {
+                        CircleCollider * circleCollider = reinterpret_cast<CircleCollider*>(collider->collider.get());
+                        DrawCircle circle = { circleCollider->radius, circleCollider->debugColor };
+                        entitySprites.Add(circle,
+                            transform->position,
+                            glm::radians(transform->rotation), // no idea if this will be fine
+                            glm::vec2(1.0f));
                     }
                 });
         }

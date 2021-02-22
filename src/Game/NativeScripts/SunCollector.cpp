@@ -5,10 +5,10 @@
 
 void SunCollector::OnInit() {
 	AddComponent<TransformComponent>(0, 0, DRAW_LAYER_10);
-	Collider* sunCollectorBoxCollider = new BoxCollider(GetEntity(), -10, -10, 10, 10);
-	sunCollectorBoxCollider->collisionLayer = CollisionLayers::LAYER_6;
-	sunCollectorBoxCollider->collidesWithLayers = CollisionLayers::LAYER_6 | CollisionLayers::SUN;
-	AddComponent<ColliderComponent>(Ref<Collider>(sunCollectorBoxCollider));
+	Collider* sunCollectorCollider = new CircleCollider(GetEntity(), 20.0f);
+	sunCollectorCollider->collidesWithLayers = CollisionLayers::LAYER_MASK | CollisionLayers::SUN;
+	sunCollectorCollider->debugColor = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
+	AddComponent<ColliderComponent>(Ref<Collider>(sunCollectorCollider));
 }
 
 void SunCollector::Update(float deltaTime) {
@@ -25,6 +25,7 @@ void SunCollector::Update(float deltaTime) {
 			auto& collider = collision.otherEntity->get<ColliderComponent>()->collider;
 			if ((int)(collider->collisionLayer & CollisionLayers::SUN) > 0) {
 				collision.otherEntity->get<NativeScriptComponent>()->Script<SunScript>()->Collect();
+				// should we collect only one like in the real game?
 			}
 		}
 	}

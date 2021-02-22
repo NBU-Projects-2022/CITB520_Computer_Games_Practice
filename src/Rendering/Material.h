@@ -84,6 +84,7 @@ private:
             #version 330 core
 
             uniform bool isDebug;
+            uniform bool isFill = false;
 
             in vec4 v_color;
             in vec2 v_uv;
@@ -95,13 +96,17 @@ private:
             void main()
             {
                 if (isDebug) {
-                    float borderSize = 0.05;
-                    if (v_uv.x < borderSize || v_uv.x > 1.0 - borderSize
-                        || v_uv.y < borderSize || v_uv.y > 1.0 - borderSize
-                    ) {
+                    if (isFill) {
                         fragColor = v_color;
                     } else {
-                        fragColor = vec4(0.0);
+                        float borderSize = 0.08;
+                        if (v_uv.x < borderSize || v_uv.x > 1.0 - borderSize
+                            || v_uv.y < borderSize || v_uv.y > 1.0 - borderSize
+                        ) {
+                            fragColor = v_color;
+                        } else {
+                            fragColor = vec4(0.0);
+                        }
                     }
                 } else {
                     fragColor = v_color * texture( spriteSampler, v_uv );

@@ -100,10 +100,15 @@ public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
+    void SetCollisionLayer(CollisionLayers collisionLayer) {
+        this->collisionLayer = collisionLayer;
+    }
+
 private:
     float spawnInterval = 2.f, nextSpawnIn = 1.5f;
     Ref<TextureGPU> bullet;
     Sprite bulletSprite;
+    CollisionLayers collisionLayer;
 };
 
 class SunScript : public NativeScript
@@ -127,10 +132,15 @@ public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
 
+    void SetCollisionLayer(CollisionLayers collisionLayer) {
+        this->collisionLayer = collisionLayer;
+    }
+
 private:
     float spawnInterval = 7.0f, nextSpawnIn = 1.0f;
     Ref<TextureGPU> sun;
     Sprite sunSprite;
+    CollisionLayers collisionLayer;
 };
 
 class ZombieScript : public NativeScript

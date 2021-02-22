@@ -102,18 +102,21 @@ void PlantScript::PlacePlantLogic() {
         GameState::Instance().money -= currentPlant.cost;
         hp = currentPlant.hp;
 
+        auto physicsLayer = (collider->collisionLayer & CollisionLayers::LAYER_MASK);
         if (currentPlant.isShooter)
         {
             spawner = CreateGameObject();
             spawner->assign<TransformComponent>(position.x + spriteWidth, position.y + spriteHeight / 2, DRAW_LAYER_10);
-            spawner->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
+            auto * spawnScript = spawner->assign<NativeScriptComponent>()->Bind<BulletSpawnScript>();
+            spawnScript->SetCollisionLayer(physicsLayer);
         }
 
         if (currentPlant.isSpawningSuns)
         {
             spawner = CreateGameObject();
             spawner->assign<TransformComponent>(position.x, position.y + spriteHeight / 2, DRAW_LAYER_10);
-            spawner->assign<NativeScriptComponent>()->Bind<SunSpawnScript>();
+            auto * spawnScript = spawner->assign<NativeScriptComponent>()->Bind<SunSpawnScript>();
+            spawnScript->SetCollisionLayer(physicsLayer);
         }
     }
 }

@@ -13,44 +13,50 @@ void LawnMowerScript::OnInit()
     lawnMower = AssetManager::LoadCachedImageFile("assets/sprites/lawnmower.png");
     lawnMowerSprite = Sprite(0, 0, lawnMower->GetWidth(), lawnMower->GetHeight(), lawnMower.get());
 
-	entity->assign<RenderComponent>(CreateRef<Sprite>(lawnMowerSprite));
+	AddComponent<RenderComponent>(CreateRef<Sprite>(lawnMowerSprite));
 
-	Collider* lawnMowerBoxCollider = new BoxCollider(entity, 0, 0, lawnMower->GetWidth(), PLOT_H);
-	lawnMowerBoxCollider->debugColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	Collider* lawnMowerBoxCollider = new BoxCollider(GetEntity(), 0, 0, lawnMower->GetWidth(), PLOT_H);
+	lawnMowerBoxCollider->debugColor = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
 	lawnMowerBoxCollider->collisionLayer = collisionLayer | CollisionLayers::LAWNMOWER;
 	lawnMowerBoxCollider->collidesWithLayers = collisionLayer | CollisionLayers::ZOMBIE;
-	entity->assign<ColliderComponent>(Ref<Collider>(lawnMowerBoxCollider));
+	AddComponent<ColliderComponent>(Ref<Collider>(lawnMowerBoxCollider));
 
-	auto rigidBody = entity->assign<RigidBodyComponent>();
-	rigidBody->isKinematic = true;
+	auto & rigidBody = AddComponent<RigidBodyComponent>();
+	rigidBody.isKinematic = true;
 
 	auto& position = GetComponent<TransformComponent>().position;
 	position.x -= lawnMower->GetWidth();
 }
 
 void LawnMowerScript::Update(float deltaTime) {
-	
 	auto& position = GetComponent<TransformComponent>().position;
 
-	if (position.x > SCREEN_WIDTH)
-	{
+	if (position.x > SCREEN_WIDTH) {
 		shouldDestroy = true;
 		return;
 	}
-	
+
 	// Check if the lawn mower has already started
-	auto& rigidBody = GetComponent<RigidBodyComponent>();
-	if (rigidBody.velocity.x != 0.f)
-	{
+	const auto & colliderComponent = GetComponent<ColliderComponent>();
+	if (active) {
+		for (auto& collision : GetComponent<ColliderComponent>().collider->collisions) {
+			// this should always be a zombie?
+			if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0) {
+				// using hp so we can display death animations (if we have any)
+				collision.otherEntity->get<NativeScriptComponent>()->Script<NativeScript>()->hp = 0;
+			}
+		}
+
 		return;
 	}
 
-	const auto & colliderComponent = GetComponent<ColliderComponent>();
-	for (auto& collision : GetComponent<ColliderComponent>().collider->collisions)
-	{
-		if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0)
-		{
+	auto& rigidBody = GetComponent<RigidBodyComponent>();
+	for (auto& collision : GetComponent<ColliderComponent>().collider->collisions) {
+		// this should always be a zombie?
+		if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0) {
+			Activate();
 			rigidBody.velocity.x = speed;
+			break;
 		}
 	}
 }

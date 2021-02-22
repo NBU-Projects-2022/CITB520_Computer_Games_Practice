@@ -119,11 +119,8 @@ public:
     void Collect();
 
 private:
+    float flyTime = 0.5f;
     int sunValue = 25;
-    float sunFallSpeed = 100.0f;
-    float sunFloatSpeed = 300.f;
-    float sunFloatDistance = 100.f;
-    float sunFloatCurrDistance = 0.f;
 };
 
 class SunSpawnScript : public NativeScript
@@ -137,6 +134,7 @@ public:
     }
 
 private:
+    Random rnd;
     float spawnInterval = 7.0f, nextSpawnIn = 1.0f;
     Ref<TextureGPU> sun;
     Sprite sunSprite;

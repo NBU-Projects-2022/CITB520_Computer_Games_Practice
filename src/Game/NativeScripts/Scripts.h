@@ -222,6 +222,19 @@ public:
     virtual void Update(float deltaTime) override;
 };
 
+class GlobalSunSpawnScript : public NativeScript
+{
+public:
+    virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+
+private:
+    Random rnd;
+    float spawnInterval = 15.0f, nextSpawnIn = 5.0f;
+    Ref<TextureGPU> sun;
+    Sprite sunSprite;
+};
+
 class ShovelControllerScript : public NativeScript
 {
 public:

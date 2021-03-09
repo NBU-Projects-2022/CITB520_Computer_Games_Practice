@@ -32,6 +32,10 @@ void Game::Init() {
     auto shovelController = CreateGameObject();
     shovelController->assign<NativeScriptComponent>()->Bind<ShovelControllerScript>();
 
+	// Create a global sun spawner
+	auto globalSunSpawn = CreateGameObject();
+	globalSunSpawn->assign<NativeScriptComponent>()->Bind<GlobalSunSpawnScript>();
+
 	const int BOTTOM_ROW_Y = 30, ROW_SIZE = 100;
 	for (int i = 0; i < ROWS; i++) {
 		// Create a zombie spawner for each row

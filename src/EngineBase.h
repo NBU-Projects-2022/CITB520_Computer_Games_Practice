@@ -141,7 +141,8 @@ public:
 
     // called before Draw
     void Update(float deltaTime) {
-        if (!isInGame || isGamePaused) {
+        auto& gameStateInstance = GameState::Instance();
+        if (!isInGame || isGamePaused || gameStateInstance.IsGameOver()) {
             return;
         }
 

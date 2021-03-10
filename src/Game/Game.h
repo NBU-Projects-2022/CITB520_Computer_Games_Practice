@@ -66,6 +66,15 @@ public:
     VecPlants plantStates;
 
     bool usingShovel = false;
+    bool gameLost = false;
+
+    bool IsGameOver() const {
+        return gameLost || DidWonGame();
+    }
+
+    bool DidWonGame() const {
+        return !waveCount && spawnCommands.empty() && spawnedZombies == killedZombies;
+    }
 
     /*void AddPlantSeed(PlantTypes type, Ref<TextureGPU> tex)
     {

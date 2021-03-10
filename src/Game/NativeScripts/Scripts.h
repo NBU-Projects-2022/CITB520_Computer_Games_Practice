@@ -222,6 +222,13 @@ public:
     virtual void Update(float deltaTime) override;
 };
 
+class GameLostScript : public NativeScript
+{
+public:
+    virtual void OnInit() override;
+    virtual void Update(float deltaTime) override;
+};
+
 class GlobalSunSpawnScript : public NativeScript
 {
 public:

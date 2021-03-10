@@ -166,13 +166,13 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
         | ImGuiWindowFlags_NoFocusOnAppearing
         | ImGuiWindowFlags_NoNav;
 
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImVec2 work_area_pos = viewport->GetWorkPos();   // Instead of using viewport->Pos we use GetWorkPos() to avoid menu bars, if any!
+    ImVec2 work_area_size = viewport->GetWorkSize();
     {
         const float DISTANCE = 10.0f;
 
         window_flags |= ImGuiWindowFlags_NoMove;
-        ImGuiViewport* viewport = ImGui::GetMainViewport();
-        ImVec2 work_area_pos = viewport->GetWorkPos();   // Instead of using viewport->Pos we use GetWorkPos() to avoid menu bars, if any!
-        ImVec2 work_area_size = viewport->GetWorkSize();
         // ImVec2 window_pos = ImVec2((corner & 1) ? (work_area_pos.x + work_area_size.x - DISTANCE) : (work_area_pos.x + DISTANCE), (corner & 2) ? (work_area_pos.y + work_area_size.y - DISTANCE) : (work_area_pos.y + DISTANCE));
         ImVec2 window_pos = ImVec2(work_area_pos.x + DISTANCE, work_area_pos.y + DISTANCE);
         // ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
@@ -181,6 +181,38 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
         ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
         ImGui::SetNextWindowSize(window_size);
         ImGui::SetNextWindowViewport(viewport->ID);
+    }
+
+    auto & gameStateInstance = GameState::Instance();
+    bool isGameOver = gameStateInstance.IsGameOver();
+    if (isGameOver) {
+        ImVec2 window_pos = ImVec2(work_area_pos.x + work_area_size.x / 2, work_area_pos.y + work_area_size.y / 2);
+        ImVec2 window_pos_pivot = ImVec2(0.5f, 0.5f);
+        ImVec2 window_size = ImVec2(0.0f, 0.0f);
+        ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+        ImGui::SetNextWindowSize(window_size);
+
+        if (ImGui::Begin("Game over", &isGameOver, window_flags)) {
+            if (gameStateInstance.DidWonGame()) {
+                ImGui::Text("Game Won");
+                ImGui::Separator();
+            } else {
+                ImGui::Text("Game Lost");
+                ImGui::Separator();
+            }
+
+
+            if (ImGui::Button("Retry", ImVec2(350.0f, 0.0f))) {
+            }
+
+            if (ImGui::Button("Quit", ImVec2(350.0f, 0.0f))) {
+                engineBase->Quit();
+            }
+
+            ImGui::End();
+        }
+
+        return;
     }
 
     if (ImGui::Begin("Info", &isOpen, window_flags))
@@ -208,7 +240,6 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
             showDebugInfo = false;
         }
 
-        auto & gameStateInstance = GameState::Instance();
         ImGui::SameLine();
         ImGui::Text("money %d, waves left %d, next wave %.2f, wave interval %.2f",
             gameStateInstance.money,

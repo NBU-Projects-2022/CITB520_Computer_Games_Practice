@@ -47,6 +47,7 @@ add_executable(${PROJECT_NAME}
     "src/Game/NativeScripts/SunCollector.cpp"
     "src/Game/NativeScripts/ShovelControllerScript.cpp"
     "src/Game/NativeScripts/GlobalSunSpawnScript.cpp"
+    "src/Game/NativeScripts/GameLostScript.cpp"
 )
 
 # OpenGL

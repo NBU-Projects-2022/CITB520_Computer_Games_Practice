@@ -36,6 +36,10 @@ void Game::Init() {
 	auto globalSunSpawn = CreateGameObject();
 	globalSunSpawn->assign<NativeScriptComponent>()->Bind<GlobalSunSpawnScript>();
 
+	// Create game lost script to track if game is lost
+	auto gameLost = CreateGameObject();
+	gameLost->assign<NativeScriptComponent>()->Bind<GameLostScript>();
+
 	const int BOTTOM_ROW_Y = 30, ROW_SIZE = 100;
 	for (int i = 0; i < ROWS; i++) {
 		// Create a zombie spawner for each row

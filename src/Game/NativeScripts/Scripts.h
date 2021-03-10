@@ -146,11 +146,12 @@ class ZombieScript : public NativeScript
 public:
     virtual void OnInit() override;
     virtual void Update(float deltaTime) override;
+    virtual void OnDestroy() override;
 
 private:
-    float zombieSpeed = 15.0f;
+    float zombieSpeed = PLOT_W / 4.7f;
 
-    float attackSpeed = 3.0f;
+    float attackSpeed = 1.0f;
     float nextAttackIn = 1.0f;
 };
 
@@ -168,7 +169,6 @@ public:
     }
 
 private:
-    float waveInterval = 5.0f, nextWaveIn = 3.0f;
     Ref<TextureGPU> zombie;
     Sprite zombieSprite;
     CollisionLayers collisionLayer;
@@ -212,7 +212,8 @@ private:
     Random rnd;
     const int ZOMBIES_COUNT = 5;
     const int WAVE_ZOMBIES_COUNT = 10;
-    const float WAVE_DURATION_SPAN = 5.0f;
+    const float WAVE_DURATION_SPAN = 15.0f;
+    const float WAVE_INTERVAL = 45.0f;
 };
 
 class SunCollector : public NativeScript

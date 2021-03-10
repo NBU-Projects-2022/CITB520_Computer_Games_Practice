@@ -5,7 +5,7 @@
 
 void BulletScript::OnInit()
 {
-    attackDamage = .2f;
+    attackDamage = 1.0f;
 }
 
 void BulletScript::Update(float deltaTime)

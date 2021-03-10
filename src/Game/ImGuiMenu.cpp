@@ -153,7 +153,7 @@ private:
     bool isActive;
 };
 
-void ImGuiMenu::DrawInGameUI(Game & gameState) {
+void ImGuiMenu::DrawInGameUI(Game & game) {
     ImGuiIO& io = ImGui::GetIO();
 
     // Game UI
@@ -225,7 +225,8 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
         if (showDebugInfo) {
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::SameLine();
-            ImGui::Text("Game objects count %d", gameState.world->getCount());
+            ImGui::Text("Game objects count %d, spawned zombies %d, killed zombies %d",
+                game.world->getCount(), gameStateInstance.spawnedZombies, gameStateInstance.killedZombies);
             ImGui::Separator();
         }
 
@@ -241,11 +242,10 @@ void ImGuiMenu::DrawInGameUI(Game & gameState) {
         }
 
         ImGui::SameLine();
-        ImGui::Text("money %d, waves left %d, next wave %.2f, wave interval %.2f",
+        ImGui::Text("money %d, waves left %d, next wave %.2f",
             gameStateInstance.money,
             gameStateInstance.waveCount,
-            gameStateInstance.waveTimer,
-            gameStateInstance.waveInterval);
+            gameStateInstance.waveTimer);
 
         for (auto& seed : gameStateInstance.plantSeeds)
         {

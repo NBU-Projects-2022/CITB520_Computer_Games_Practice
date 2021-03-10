@@ -18,7 +18,7 @@ public:
     void UpdateInput(const SDL_Event * event);
 
     //
-    void DrawImGui(SDL_Window* window, Game & gameState);
+    void DrawImGui(SDL_Window* window, Game & game);
 
 private:
     EngineBase * engineBase;

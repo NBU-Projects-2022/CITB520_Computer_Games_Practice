@@ -12,11 +12,11 @@ void ZombieSpawnScript::OnInit() {
 }
 
 void ZombieSpawnScript::Update(float deltaTime) {
-    auto & instance = GameState::Instance();
-    auto & spawnCommands = instance.spawnCommands;
+    auto & gameStateInstance = GameState::Instance();
+    auto & spawnCommands = gameStateInstance.spawnCommands;
     if (!spawnCommands.empty()) {
         auto & front = spawnCommands.front();
-        if (front.gameTime < instance.totalGameTime && front.layerId == layerId) {
+        if (front.gameTime < gameStateInstance.totalGameTime && front.layerId == layerId) {
             SpawnZombie();
             spawnCommands.pop();
         }
@@ -41,6 +41,6 @@ void ZombieSpawnScript::SpawnZombie() {
     auto rigidBody = zombieEntity->assign<RigidBodyComponent>();
     rigidBody->isKinematic = true;
 
-    auto & instance = GameState::Instance();
-    ++instance.spawnedZombies;
+    auto & gameStateInstance = GameState::Instance();
+    ++gameStateInstance.spawnedZombies;
 }

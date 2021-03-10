@@ -57,9 +57,9 @@ public:
 
     float totalGameTime = 0.0f;
 
-    float waveTimer = 15.0f;
-    float waveInterval = 30.0f;
+    float waveTimer = 45.0f;
     int waveCount = 4;
+
     std::queue<SpawnCommand> spawnCommands;
     std::vector<PlantSeed> plantSeeds;
 

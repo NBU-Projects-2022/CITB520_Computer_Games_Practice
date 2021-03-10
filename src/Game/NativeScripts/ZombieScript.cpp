@@ -10,8 +10,13 @@
 
 void ZombieScript::OnInit()
 {
-    hp = 2.f;
-    attackDamage = 1.f;
+    hp = 10.0f;
+    attackDamage = 2.0f;
+}
+
+void ZombieScript::OnDestroy() {
+    auto & gameStateInstance = GameState::Instance();
+    ++gameStateInstance.killedZombies;
 }
 
 void ZombieScript::Update(float deltaTime) {

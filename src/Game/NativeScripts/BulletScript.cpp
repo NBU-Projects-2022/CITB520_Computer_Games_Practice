@@ -5,7 +5,6 @@
 
 void BulletScript::OnInit()
 {
-    attackDamage = 1.0f;
 }
 
 void BulletScript::Update(float deltaTime)
@@ -25,7 +24,7 @@ void BulletScript::Update(float deltaTime)
     {
         if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0)
         {
-            collision.otherEntity->get<NativeScriptComponent>()->Script<NativeScript>()->hp -= attackDamage;
+            collision.otherEntity->get<NativeScriptComponent>()->Script<ZombieScript>()->Damage(attackDamage);
             shouldDestroy = true;
             break;
         }

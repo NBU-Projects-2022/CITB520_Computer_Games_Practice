@@ -42,8 +42,6 @@ public:
     }
 
     bool shouldDestroy;
-    float attackDamage;
-    float hp;
 
 private:
     ECS::Entity * entity;
@@ -58,12 +56,17 @@ public:
     virtual void OnDestroy() override;
     virtual void Update(float deltaTime) override;
 
+    void Damage(float dmg) { hp -= dmg; }
+    int GetPrice() { return price; }
+
 private:
     bool placed;
+    int price;
     float x;
     float y;
     float spriteWidth;
     float spriteHeight;
+    float hp;
 
     ECS::Entity *spawner;
 
@@ -92,6 +95,7 @@ public:
 
 private:
     float bulletSpeed = 500.0f;
+    float attackDamage = 1.f;
 };
 
 class BulletSpawnScript : public NativeScript
@@ -148,11 +152,15 @@ public:
     virtual void Update(float deltaTime) override;
     virtual void OnDestroy() override;
 
+    void Damage(float dmg) { hp -= dmg; }
+
 private:
     float zombieSpeed = PLOT_W / 4.7f;
 
     float attackSpeed = 1.0f;
     float nextAttackIn = 1.0f;
+    float attackDamage = 10.f ;
+    float hp = 2.f;
 };
 
 class ZombieSpawnScript : public NativeScript

@@ -10,8 +10,6 @@
 
 void ZombieScript::OnInit()
 {
-    hp = 10.0f;
-    attackDamage = 2.0f;
 }
 
 void ZombieScript::OnDestroy() {
@@ -33,7 +31,6 @@ void ZombieScript::Update(float deltaTime) {
     nextAttackIn -= deltaTime;
     for (auto& collision : GetComponent<ColliderComponent>().collider->collisions)
     {
-        //check if this works
         if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::PLANT) > 0)
         {
             collidesWithPlant = true;
@@ -41,7 +38,7 @@ void ZombieScript::Update(float deltaTime) {
 
             if (nextAttackIn <= 0)
             {
-                collision.otherEntity->get<NativeScriptComponent>()->Script<NativeScript>()->hp -= attackDamage;
+                collision.otherEntity->get<NativeScriptComponent>()->Script<PlantScript>()->Damage(attackDamage);
                 nextAttackIn = attackSpeed;
             }
 

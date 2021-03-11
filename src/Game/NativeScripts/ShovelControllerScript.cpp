@@ -28,6 +28,7 @@ void ShovelControllerScript::Update(float deltaTime) {
     for (auto & collision : collider.collider->collisions) {
         auto * plantScript = collision.otherEntity->get<NativeScriptComponent>()->Script<PlantScript>();
         if (plantScript) {
+            instance.money += plantScript->GetPrice() / 2;
             plantScript->shouldDestroy = true;
             instance.usingShovel = false;
             usedShovel = true;

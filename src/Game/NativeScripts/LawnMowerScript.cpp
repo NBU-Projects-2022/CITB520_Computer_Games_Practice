@@ -42,8 +42,7 @@ void LawnMowerScript::Update(float deltaTime) {
 		for (auto& collision : GetComponent<ColliderComponent>().collider->collisions) {
 			// this should always be a zombie?
 			if ((int)(collision.otherEntity->get<ColliderComponent>()->collider->collisionLayer & CollisionLayers::ZOMBIE) > 0) {
-				// using hp so we can display death animations (if we have any)
-				collision.otherEntity->get<NativeScriptComponent>()->Script<NativeScript>()->hp = 0;
+				collision.otherEntity->get<NativeScriptComponent>()->Script<NativeScript>()->shouldDestroy = true;
 			}
 		}
 

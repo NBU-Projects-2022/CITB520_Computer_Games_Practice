@@ -101,6 +101,7 @@ void PlantScript::PlacePlantLogic() {
         auto& currentPlant = GameState::Instance().plantStates.GetPlantByType(PlantSpawnScript::plantType);
         GameState::Instance().money -= currentPlant.cost;
         hp = currentPlant.hp;
+        price = currentPlant.cost;
 
         auto physicsLayer = (collider->collisionLayer & CollisionLayers::LAYER_MASK);
         if (currentPlant.isShooter)
